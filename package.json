@@ -4,7 +4,7 @@
 		"private": true,
 		"scripts": {
 				"start": "webpack --mode development --entry ./view/src/index.js --output-path ./view/static --watch",
-				"prod": "webpack --mode production ./view/src/index.js --output ./view/static/main.js",
+				"prod": "webpack --mode development --entry ./view/src/index.js --output-path ./view/static",
 				"other-start": "webpack --watch"
 		},
 		"devDependencies": {
