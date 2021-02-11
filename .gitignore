@@ -271,3 +271,4 @@ sketch
 # End of https://www.toptal.com/developers/gitignore/api/django,pycharm,react
 
 view/static/main.js
+Ono/secret.py

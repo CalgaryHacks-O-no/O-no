@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from Ono.secret import DatabaseHost, DatabaseSchema, DatabaseUsername, DatabasePassword, S3BucketAccessKey, \
+    S3BucketSecretKey, S3BucketName, Environment, DjangoSecret
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-6bl)4b1v_!=!)085-u#cxng*26_h3e6g@w0+r_9olc*@lc97l'
+SECRET_KEY = DjangoSecret
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
     'view'
 ]
 
@@ -76,9 +79,21 @@ WSGI_APPLICATION = 'Ono.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
+
+    # SQLite Configuration
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': DatabaseSchema,
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': DatabaseUsername,
+        'PASSWORD': DatabasePassword,
+        'HOST': DatabaseHost,
+        'PORT': '3306',
+        'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'", },
     }
 }
 
@@ -120,3 +135,25 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+    'CacheControl': 'max-age=3600',
+}
+
+AWS_STORAGE_BUCKET_NAME = S3BucketName
+AWS_S3_REGION_NAME = 'us-west-2'  # e.g. us-east-2
+AWS_ACCESS_KEY_ID = S3BucketAccessKey
+AWS_SECRET_ACCESS_KEY = S3BucketSecretKey
+AWS_DEFAULT_ACL = None
+
+# Tell django-storages the domain to use to refer to static files.
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+# Tell the staticfiles app to use S3Boto3 storage when writing the collected static files (when
+# you run `collectstatic`).
+STATICFILES_LOCATION = 'static'
+if Environment == 'production':
+    STATICFILES_STORAGE = 'Ono.custom_storages.StaticStorage'
+
+MEDIAFILES_LOCATION = 'media'
+DEFAULT_FILE_STORAGE = 'Ono.custom_storages.MediaStorage'
