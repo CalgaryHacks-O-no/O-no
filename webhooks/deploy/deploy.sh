@@ -10,5 +10,5 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py collectstatic --noinput
 deactivate
-systemctl stop gunicorn
-systemctl start gunicorn
+sudo systemctl stop gunicorn
+sudo systemctl start gunicorn
