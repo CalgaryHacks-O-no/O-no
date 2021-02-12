@@ -4,7 +4,7 @@ git fetch --all
 git checkout --force "origin/deploy"
 npm i
 npm run prod
-source ../bin/activate
+source venv/bin/activate
 pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
