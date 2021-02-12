@@ -1,24 +1,55 @@
-<!DOCTYPE html>
-<html style="scroll-behavior: smooth;">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  {% load static %}
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static "bootstrap-4.5.3/bootstrap.min.css" %}">
-  <link rel="stylesheet" href="{% static "style.css" %}">
-  
-  <title>O(no)</title>
-</head>
-
-<body>
-<div id="root"><!-- React --></div>
-</body>
+<!DOCTYPE HTML>
+<!--
+	Aerial by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
 {% load static %}
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="{% static "main.js" %}"></script>
-<script src="{% static "bootstrap-4.5.3/bootstrap.min.js" %}"></script>
+<html>
+	<head>
+		<title>CalgaryHacks O(no)</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="{% static "bootstrap-4.5.3/bootstrap.min.css" %}">
+  		<link rel="stylesheet" href="{% static "style.css" %}">
+		<link rel="stylesheet" href="{% static "assets/css/main.css" %}" />
+		<noscript><link rel="stylesheet" href="{% static "assets/css/noscript.css" %}" /></noscript>
+		<link rel="icon" type="image/png" href="{% static "favicon.ico" %}"/>
+	</head>
+	<body class="is-preload">
+		<div id="wrapper">
+			<div id="bg"></div>
+			<div id="overlay"></div>
+			<div id="main">
+
+				<!-- Header -->
+					<header id="header">
+						<h1>O(no)</h1>
+						<p>Richard Lee &nbsp;&bull;&nbsp; Shamez Meghji &nbsp;&bull;&nbsp; Ethan Rigby &nbsp;&bull;&nbsp; Jean-David Rousseau &nbsp;&bull;&nbsp; Victor Sanchez</p>
+						<nav>
+							<ul>
+								<li><a href="https://discord.gg/abG6A6duy5" class="icon brands fa-discord"><span class="label">Discord</span></a></li>
+								<li><a href="https://github.com/CalgaryHacks-O-no/O-no" class="icon brands fa-github"><span class="label">Github</span></a></li>
+								<li><a href="https://calgary-hacks-2021.devpost.com/" class="icon brands fa-dev"><span class="label">Devpost</span></a></li>
+							</ul>
+						</nav>
+						<br />
+						<div id="root"><!-- React --></div>
+					</header>
+				<!-- Footer -->
+					<footer id="footer">
+						<span class="copyright">&copy; CalgaryHacks - Team O(no).  Design: <a href="http://html5up.net">HTML5 UP</a>.</span>
+					</footer>
+
+			</div>
+		</div>
+		<script src="{% static "main.js" %}"></script>
+		<script>
+			window.onload = function() { document.body.classList.remove('is-preload'); }
+			window.ontouchmove = function() { return false; }
+			window.onorientationchange = function() { document.body.scrollTop = 0; }
+		</script>
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="{% static "bootstrap-4.5.3/bootstrap.min.js" %}"></script>
+	</body>
 </html>
