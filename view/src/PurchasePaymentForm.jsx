@@ -61,46 +61,43 @@ function PurchasePaymentForm(props) {
 							</label>
 						</div>
 					</div>
-					<div className="form-group row">
-						<label
-							htmlFor="varTip"
-							className="mr-3 col-sm-3 col-form-label"
-						>
-							Or choose your own tip
-						</label>
-						<div className="col">
-							<div className="input-group">
-								<input
-									type="text"
-									className="form-control"
-									placeholder="Tip amount"
-									id="varTip"
-								/>
-								<div
-									className="input-group-append"
-									id="varTip-dollar"
+				</div>
+				<div className="form-group row">
+					<label htmlFor="varTip" className="col-sm-3 col-form-label">
+						Or choose your own tip
+					</label>
+					<div className="col">
+						<div className="input-group">
+							<input
+								type="text"
+								className="form-control"
+								placeholder="Tip amount"
+								id="varTip"
+							/>
+							<div
+								className="input-group-append"
+								id="varTip-dollar"
+							>
+								<button
+									className="btn btn-outline-secondary"
+									type="button"
 								>
-									<button
-										className="btn btn-outline-secondary"
-										type="button"
-									>
-										$
-									</button>
-									<button
-										className="btn btn-outline-secondary"
-										type="button"
-									>
-										%
-									</button>
-								</div>
+									$
+								</button>
+								<button
+									className="btn btn-outline-secondary"
+									type="button"
+								>
+									%
+								</button>
 							</div>
 						</div>
 					</div>
-					<small className="form-text text-muted">
-						100% of all funds go to your local restaurants 😊
-					</small>
 				</div>
-
+				<small className="form-text text-muted">
+					100% of all funds go to your local restaurants 😊
+				</small>
+				<br />
 				<button type="submit" className="btn btn-primary">
 					Submit
 				</button>
