@@ -5,35 +5,27 @@ function PurchaseScreen(props) {
 		console.log("!!! submitted");
 	};
 
+	const basicField = (id, desc, type = "text") => (
+		<div className="form-group row">
+			<label htmlFor={id} className="col-sm-3 col-form-label">
+				{desc}
+			</label>
+			<div className="col">
+				<input
+					type={type}
+					className="form-control"
+					id={id}
+					aria-describedby={desc}
+				/>
+			</div>
+		</div>
+	);
+
 	return (
 		<div className="container">
 			<form onSubmit={onSubmit}>
-				<div className="form-group row">
-					<label htmlFor="name" className="col-sm-3 col-form-label">
-						Name
-					</label>
-					<div className="col">
-						<input
-							type="text"
-							className="form-control"
-							id="name"
-							aria-describedby="name"
-						/>
-					</div>
-				</div>
-				<div className="form-group row">
-					<label htmlFor="name" className="col-sm-3 col-form-label">
-						Email
-					</label>
-					<div className="col">
-						<input
-							type="email"
-							className="form-control"
-							id="name"
-							aria-describedby="email"
-						/>
-					</div>
-				</div>
+				{basicField("name", "Name")}
+				{basicField("email", "Email", "email")}
 				<div className="form-group">
 					<label htmlFor="name" className="mr-3">
 						Tip amount
