@@ -3,6 +3,7 @@ from django.urls import path, re_path, include
 from . import views
 
 urlpatterns = [
-    path('view/restaurant/<uuid:onjID>', views.get_restaurant()),
+    path('restaurant/<uuid:onjID>', views.get_restaurant),
     path('fuckit', views.imp)
 ]
+
