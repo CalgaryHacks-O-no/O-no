@@ -9,6 +9,10 @@ class Community (models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.TextField(blank=False)
 
+    class Meta:
+        verbose_name = "Community"
+        verbose_name_plural = "Communities"
+
 
 class Restaurant (models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
