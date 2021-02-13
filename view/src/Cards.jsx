@@ -35,8 +35,8 @@ function Cards(props) {
 				<div className="card-body">
 					<img src={card.image} width="300" height="300" class="rounded mx-auto d-block"></img>
 					<h5 className="card-title text-dark mt-4" class="font-weight-bold" >{card.title}</h5>
-					<h6 className="card-title text-dark mt-1 small" class="font-weight-bold">{card.location}</h6>
-					<h6 className="card-description text-dark mt-2 small" class="font-weight-light">{card.description}</h6>
+					<h6 className="card-title text-dark mt-1 small font-weight-bold">{card.location}</h6>
+					<h6 className="card-description text-dark mt-2 small font-weight-normal" >{card.description}</h6>
 				</div>
 			</div>
 		));
