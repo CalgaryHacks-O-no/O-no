@@ -6,3 +6,4 @@ from .models import *
 admin.site.register(Community)
 admin.site.register(Restaurant)
 admin.site.register(Purchase)
+admin.site.register(Voucher)
