@@ -1,10 +1,12 @@
+import os
 import pandas
 # import matplotlib
 import backend.models as internal_models
+from Ono.settings import BASE_DIR
 
 
 def read_business_licenses() -> pandas.DataFrame:
-    df = pandas.read_csv('Calgary_Business_Licenses_Map.csv')
+    df = pandas.read_csv(os.path.join(BASE_DIR, 'backend/Calgary_Business_Licenses_Map.csv'))
     return df
 
 
@@ -35,12 +37,21 @@ def get_restaurant_communities(df: pandas.DataFrame, restaurant_idxs: set) -> se
 def add_communities_to_database() -> None:
     df = read_business_licenses()
     names = get_restaurant_communities(df, get_restaurant_indexes(df))
-    print(internal_models.Community.objects.all())
     for name in names:
-        new_community = internal_models.Community(name=name)
-        new_community.save()
+        same_names = internal_models.Community.objects.filter(name=name)
+        if len(same_names) == 0:
+            new_community = internal_models.Community(name=name)
+            new_community.save()
+        else:
+            community_to_alter = same_names[0]
+            # remove extras
+            if len(same_names) > 1:
+                for dup in same_names:
+                    dup.delete()
+            # do nothing there are no other attributes to alter
+        break
 
-    print(internal_models.Community.objects.all())
+
 
 
 

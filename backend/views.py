@@ -1,4 +1,6 @@
 from django.shortcuts import render
+
+from . import business_licenses
 from .models import *
 from django.http import HttpResponse
 
@@ -10,8 +12,8 @@ def get_restaurant(request, restaurant_id):
     return restaurant.json_data()
 
 
-def imp(request):
-    return HttpResponse("sup")
+def update_communities(request):
+    business_licenses.add_communities_to_database()
 
 
 

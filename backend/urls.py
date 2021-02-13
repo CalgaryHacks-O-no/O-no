@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     path('restaurant/<uuid:onjID>', views.get_restaurant),
-    path('fuckit', views.imp)
+    path('update_communities', views.update_communities)
 ]
 
