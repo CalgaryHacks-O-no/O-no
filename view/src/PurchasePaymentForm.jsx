@@ -26,36 +26,48 @@ function PurchasePaymentForm(props) {
 			<form onSubmit={onSubmit}>
 				{basicField("name", "Name")}
 				{basicField("email", "Email", "email")}
-				<div className="form-group">
-					<label htmlFor="name" className="mr-3">
+				<div className="form-group row">
+					<label htmlFor="name" className="col-sm-3 col-form-label">
 						Tip amount
 					</label>
-					<div
-						className="btn-group btn-group-toggle"
-						data-toggle="buttons"
-					>
-						<label className="btn btn-light active">
-							<input type="radio" name="options" id="option1" />
-							10%
-						</label>
-						<label className="btn btn-light">
-							<input type="radio" name="options" id="option2" />
-							15%
-						</label>
-						<label className="btn btn-light">
-							<input type="radio" name="options" id="option3" />
-							20%
-						</label>
-					</div>
-					<div className="form-group row">
-						<div className="col-sm-3">
-							<label
-								htmlFor="varTip"
-								className="mr-3 col-form-label"
-							>
-								Or choose your own tip
+					<div className="col">
+						<div
+							className="btn-group btn-group-toggle"
+							data-toggle="buttons"
+						>
+							<label className="btn btn-light active">
+								<input
+									type="radio"
+									name="options"
+									id="option1"
+								/>
+								10%
+							</label>
+							<label className="btn btn-light">
+								<input
+									type="radio"
+									name="options"
+									id="option2"
+								/>
+								15%
+							</label>
+							<label className="btn btn-light">
+								<input
+									type="radio"
+									name="options"
+									id="option3"
+								/>
+								20%
 							</label>
 						</div>
+					</div>
+					<div className="form-group row">
+						<label
+							htmlFor="varTip"
+							className="mr-3 col-sm-3 col-form-label"
+						>
+							Or choose your own tip
+						</label>
 						<div className="col">
 							<div className="input-group">
 								<input
