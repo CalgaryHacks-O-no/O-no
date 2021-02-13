@@ -5,7 +5,7 @@ function Cards(props) {
 		{
 			image: "https://www.emmys.com/sites/default/files/styles/show_detail/public/2013/09/bobs-burgers-600x600.jpg?itok=4j1yUxo5",
 			title: "Bobs Burgers",
-			location: "Unknown",
+			location: "2764 Glenmore Trail, Calgary, AB T2C 2E6",
 			description: "Buy 3 burgers, get one for free!",
 		},
 		{
