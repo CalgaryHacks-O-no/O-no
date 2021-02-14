@@ -85,103 +85,36 @@ function PointsBreakdown(props) {
 			.outerRadius(outerRadius);
 
 		const svgCanvas = d3.select(".pointsBreakdown");
+		svgCanvas.selectAll("*").remove();
 
-		// svgCanvas
-		// 	.selectAll(".arcs")
-		// 	.data(pieArcData, (d) => d.key)
-		// 	.enter()
-		// 	.append("path")
-		// 	.attr("fill", (d) => d.data.fill)
-		// 	.attr("d", arcPie);
-
-		// svgCanvas
-		// 	.selectAll(".innerText")
-		// 	.data(pieArcData, (d) => d.key)
-		// 	.enter()
-		// 	.append("text")
-		// 	.text((d) => d.data.text)
-		// 	.attr("fill", "white")
-		// 	.attr("font-family", "Comfortaa, cursive")
-		// 	.attr("font-size", 24)
-		// 	.attr("font-weight", "bold")
-		// 	.attr("text-anchor", "middle")
-		// 	.attr("dy", "0.2em")
-		// 	.attr("transform", (d) => `translate(${arcPie.centroid(d)})`);
-
-		// svgCanvas
-		// 	.selectAll(".outerText")
-		// 	.data(pieArcData, (d) => d.key)
-		// 	.enter()
-		// 	.append("text")
-		// 	.text((d) => d.data.label)
-		// 	.attr("fill", "black")
-		// 	.attr("font-family", "Comfortaa, cursive")
-		// 	.attr("font-size", 24)
-		// 	.attr("text-anchor", (d) => {
-		// 		const [centroidX, centroidY] = bigArcPie.centroid(d);
-		// 		if (Math.abs(centroidX / outerRadius) < 0.3) {
-		// 			return "middle";
-		// 		} else if (centroidX > 0) {
-		// 			return "start";
-		// 		} else {
-		// 			return "end";
-		// 		}
-		// 	})
-		// 	.attr("transform", (d) => `translate(${bigArcPie.centroid(d)})`);
-
-		let paths = svgCanvas.selectAll("path");
-		paths
+		svgCanvas
+			.selectAll(".arcs")
 			.data(pieArcData, (d) => d.key)
-			.join(
-				(enter) =>
-					enter
-						.append("path")
-						.attr("fill", (d) => d.data.fill)
-						.attr("d", arcPie),
-				(update) => update,
-				(exit) => exit.remove()
-			);
+			.enter()
+			.append("path")
+			.attr("fill", (d) => d.data.fill)
+			.attr("d", arcPie);
 
-		let innerTexts = svgCanvas.selectAll(".innerText");
-		innerTexts
+		svgCanvas
+			.selectAll(".innerText")
 			.data(pieArcData, (d) => d.key)
-			.join(
-				(enter) =>
-					enter
-						.append("text")
-						.attr("className", "innerText")
-						.text((d) => d.data.text)
-
-						.attr(
-							"transform",
-							(d) => `translate(${arcPie.centroid(d)})`
-						),
-				(update) => update,
-				(exit) => exit.remove()
-			)
+			.enter()
+			.append("text")
+			.text((d) => d.data.text)
 			.attr("fill", "white")
 			.attr("font-family", "Comfortaa, cursive")
 			.attr("font-size", 24)
 			.attr("font-weight", "bold")
 			.attr("text-anchor", "middle")
-			.attr("dy", "0.2em");
+			.attr("dy", "0.2em")
+			.attr("transform", (d) => `translate(${arcPie.centroid(d)})`);
 
-		let outerTexts = svgCanvas.selectAll(".outerText");
-		outerTexts
+		svgCanvas
+			.selectAll(".outerText")
 			.data(pieArcData, (d) => d.key)
-			.join(
-				(enter) =>
-					enter
-						.append("text")
-						.attr("className", "outerText")
-						.text((d) => d.data.label)
-						.attr(
-							"transform",
-							(d) => `translate(${bigArcPie.centroid(d)})`
-						),
-				(update) => update,
-				(exit) => exit.remove()
-			)
+			.enter()
+			.append("text")
+			.text((d) => d.data.label)
 			.attr("fill", "black")
 			.attr("font-family", "Comfortaa, cursive")
 			.attr("font-size", 24)
@@ -194,13 +127,15 @@ function PointsBreakdown(props) {
 				} else {
 					return "end";
 				}
-			});
+			})
+			.attr("transform", (d) => `translate(${bigArcPie.centroid(d)})`);
 
-		svgCanvas
-			.selectAll(".totalPoints")
-			.data([totalPoints], (d) => true)
+		let totalPointsList = svgCanvas.selectAll(".totalPoints");
+		totalPointsList
+			.data([totalPoints])
 			.enter()
 			.append("text")
+			.attr("className", "totalPoints")
 			.text((d) => d)
 			.attr("text-anchor", "middle")
 			.attr("x", 0)
