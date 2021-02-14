@@ -1,11 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CSRFToken from "./CSRFToken";
 
 function PurchasePaymentForm(props) {
-	const { onSubmit } = props;
+	const {
+		onSubmit,
+		priceState,
+		tipState,
+		tipInputState,
+		tipModeState,
+		curbsidePickupState,
+	} = props;
+	const [price, setPrice] = priceState;
+	const [tip, setTip] = tipState;
+	const [curbsidePickup, setCurbsidePickup] = curbsidePickupState;
+	const [tipInput, setTipInput] = tipInputState;
+	const [tipMode, setTipMode] = tipModeState;
 
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
+	const [creditCard, setCreditCard] = useState("");
 
 	const basicField = (id, desc, hook, type = "text") => (
 		<div className="form-group row">
@@ -43,7 +56,8 @@ function PurchasePaymentForm(props) {
 								<input
 									type="radio"
 									name="options"
-									id="option1"
+									id="tip10Percent"
+									onClick={() => setTip(price * 0.1)}
 								/>
 								10%
 							</label>
@@ -51,7 +65,8 @@ function PurchasePaymentForm(props) {
 								<input
 									type="radio"
 									name="options"
-									id="option2"
+									id="tip15Percent"
+									onClick={() => setTip(price * 0.15)}
 								/>
 								15%
 							</label>
@@ -59,7 +74,8 @@ function PurchasePaymentForm(props) {
 								<input
 									type="radio"
 									name="options"
-									id="option3"
+									id="tip20Percent"
+									onClick={() => setTip(price * 0.2)}
 								/>
 								20%
 							</label>
@@ -73,10 +89,11 @@ function PurchasePaymentForm(props) {
 					<div className="col">
 						<div className="input-group">
 							<input
-								type="text"
+								type="number"
 								className="form-control"
 								placeholder="Tip amount"
 								id="varTip"
+								onChange={(e) => setTipInput(e.target.value)}
 							/>
 							<div
 								className="input-group-append"
@@ -85,12 +102,14 @@ function PurchasePaymentForm(props) {
 								<button
 									className="btn btn-outline-secondary"
 									type="button"
+									onClick={() => setTipMode("dollars")}
 								>
 									$
 								</button>
 								<button
 									className="btn btn-outline-secondary"
 									type="button"
+									onClick={() => setTipMode("percent")}
 								>
 									%
 								</button>
@@ -98,8 +117,22 @@ function PurchasePaymentForm(props) {
 						</div>
 					</div>
 				</div>
+				{basicField("creditCard", "Credit Card", setCreditCard)}
+				<div className="form-check">
+					<input
+						className="form-check-input"
+						type="checkbox"
+						value=""
+						id="pickupCheck"
+						onChange={(e) => setCurbsidePickup(e.target.checked)}
+					/>
+					<label className="form-check-label" htmlFor="pickupCheck">
+						Curbside pickup
+					</label>
+				</div>
 				<small className="form-text text-muted">
-					100% of all funds go to your local restaurants 😊
+					By choosing curbside pickup, you help your local restaurants
+					and get a free point bonus! 😊
 				</small>
 				<br />
 				<button type="submit" className="btn btn-primary">

@@ -117,8 +117,8 @@ function Leaderboards(props) {
 					</tr>
 				</thead>
 				<tbody>
-					{addRows(sortedUserData)}
-					{addRows(people.sort((a, b) => b.points - a.points))}
+					{/*{addRows(sortedUserData)}*/}
+					{addRows(people.concat(sortedUserData).sort((a, b) => b.points - a.points))}
 				</tbody>
 			</table>
 		</div>
