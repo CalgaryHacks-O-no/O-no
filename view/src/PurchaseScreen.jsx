@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PurchaseDetails from "./PurchaseDetails";
 import PurchasePaymentForm from "./PurchasePaymentForm";
 import PointsBreakdown from "./PointsBreakdown";
@@ -6,7 +6,13 @@ import PointsBreakdown from "./PointsBreakdown";
 function PurchaseScreen(props) {
 	const { url } = props;
 
-	// const []
+	const [price, setPrice] = useState(20);
+	const [tip, setTip] = useState(0);
+	const [curbsidePickup, setCurbsidePickup] = useState(false);
+
+	useEffect(() => {
+		console.log("tip: ", tip);
+	}, [tip]);
 
 	const onSubmit = (event) => {
 		const csrfToken = CSRFToken;
@@ -39,13 +45,18 @@ function PurchaseScreen(props) {
 			<PointsBreakdown />
 			<div className="row">
 				<div className="col-lg-6">
-					<PurchaseDetails />
+					<PurchaseDetails price={price} tip={tip} />
 				</div>
 				<div className="col-lg-6">
 					<div className="pl-4">
 						<PurchasePaymentForm
 							onSubmit={onSubmit}
-							url={props.url}
+							priceState={[price, setPrice]}
+							tipState={[tip, setTip]}
+							curbsidePickupState={[
+								curbsidePickup,
+								setCurbsidePickup,
+							]}
 						/>
 					</div>
 				</div>

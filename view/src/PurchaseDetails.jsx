@@ -1,6 +1,8 @@
 import React from "react";
 
 function PurchaseDetails(props) {
+	const { price, tip } = props;
+
 	const purchaseData = {
 		items: [
 			{
@@ -41,6 +43,8 @@ function PurchaseDetails(props) {
 		0
 	);
 
+	console.log("!!! tip: ", tip); // FIXME: delete
+
 	return (
 		<>
 			<table className="table table-hover">
@@ -67,6 +71,18 @@ function PurchaseDetails(props) {
 				</div>
 				<div className="row">
 					<div className="col">
+						<p>
+							<b>Tip</b>
+						</p>
+					</div>
+					<div className="col">
+						<p className="text-right">
+							<b>${parseFloat(tip).toFixed(2)}</b>
+						</p>
+					</div>
+				</div>
+				<div className="row">
+					<div className="col">
 						<p>Tax</p>
 					</div>
 					<div className="col">
@@ -83,7 +99,13 @@ function PurchaseDetails(props) {
 					</div>
 					<div className="col">
 						<p className="text-right">
-							<b>${(beforeTaxPrice * 1.05).toFixed(2)}</b>
+							<b>
+								$
+								{(
+									beforeTaxPrice * 1.05 +
+									parseFloat(tip)
+								).toFixed(2)}
+							</b>
 						</p>
 					</div>
 				</div>

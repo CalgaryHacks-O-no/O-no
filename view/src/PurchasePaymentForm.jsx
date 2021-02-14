@@ -1,11 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CSRFToken from "./CSRFToken";
 
 function PurchasePaymentForm(props) {
-	const { onSubmit } = props;
+	const { onSubmit, priceState, tipState, curbsidePickupState } = props;
+	const [price, setPrice] = priceState;
+	const [tip, setTip] = tipState;
+	const [curbsidePickup, setCurbsidePickup] = curbsidePickupState;
 
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
+
+	const [tipInput, setTipInput] = useState(0);
+	const [tipMode, setTipMode] = useState("dollars");
+
+	useEffect(() => {
+		if (tipInput == "" || parseFloat(tipInput) <= 0) {
+			setTip(0);
+			return;
+		}
+
+		if (tipMode === "dollars") {
+			setTip(parseFloat(tipInput));
+		} else {
+			setTip(parseFloat(tipInput) * 0.01 * price);
+		}
+	}, [tipInput, tipMode]);
 
 	const basicField = (id, desc, hook, type = "text") => (
 		<div className="form-group row">
@@ -43,7 +62,8 @@ function PurchasePaymentForm(props) {
 								<input
 									type="radio"
 									name="options"
-									id="option1"
+									id="tip10Percent"
+									onClick={() => setTip(price * 0.1)}
 								/>
 								10%
 							</label>
@@ -51,7 +71,8 @@ function PurchasePaymentForm(props) {
 								<input
 									type="radio"
 									name="options"
-									id="option2"
+									id="tip15Percent"
+									onClick={() => setTip(price * 0.15)}
 								/>
 								15%
 							</label>
@@ -59,7 +80,8 @@ function PurchasePaymentForm(props) {
 								<input
 									type="radio"
 									name="options"
-									id="option3"
+									id="tip20Percent"
+									onClick={() => setTip(price * 0.2)}
 								/>
 								20%
 							</label>
@@ -73,10 +95,11 @@ function PurchasePaymentForm(props) {
 					<div className="col">
 						<div className="input-group">
 							<input
-								type="text"
+								type="number"
 								className="form-control"
 								placeholder="Tip amount"
 								id="varTip"
+								onChange={(e) => setTipInput(e.target.value)}
 							/>
 							<div
 								className="input-group-append"
@@ -85,12 +108,14 @@ function PurchasePaymentForm(props) {
 								<button
 									className="btn btn-outline-secondary"
 									type="button"
+									onClick={() => setTipMode("dollars")}
 								>
 									$
 								</button>
 								<button
 									className="btn btn-outline-secondary"
 									type="button"
+									onClick={() => setTipMode("percent")}
 								>
 									%
 								</button>
