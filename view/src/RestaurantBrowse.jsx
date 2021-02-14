@@ -3,7 +3,7 @@ import { toTitleCase } from "./utils";
 import Select from 'react-select'
 
 function RestaurantBrowse(props) {
-	const { communities, currentCommunity, url, setCommRestaurants, setOrderRestaurant } = props;
+	const { communities, currentCommunity, url, setCommRestaurants, setOrderRestaurant, setCurrentCommunity } = props;
 	const [search, setSearch] = useState([]);
 	const [restaurants, setRestaurants] = useState([]);
 	const [searchDefault, setSearchDefault] = useState(0)
@@ -48,7 +48,10 @@ function RestaurantBrowse(props) {
 
 	const performSearch = (value) => {
 		getRestaurants(value.value.name);
-		setSearchDefault(search.find(item => item.value.id===value.id));
+		setSearchDefault(search.find(item => item.value.id===value.value.id));
+		console.log(value.value.id);
+		console.log({'id':value.value.id,'name':value.value.name})
+		setCurrentCommunity({'id':value.value.id,'name':value.value.name})
 	};
 
 	const setOrderDetails = (e, value) => {
@@ -57,7 +60,7 @@ function RestaurantBrowse(props) {
 	};
 
 	const renderRestaurantTable = () => {
-		return restaurants.map((restaurant) => (
+		return restaurants.slice(0,15).map((restaurant) => (
 			<tr key={restaurant.id}>
 				<td>{toTitleCase(restaurant.name)}</td>
 				<td>{toTitleCase(restaurant.address)}</td>
@@ -67,31 +70,31 @@ function RestaurantBrowse(props) {
 			</tr>));
 	};
 
-	const renderCards = (cardData) => {
-		return cardData.map((card, index) => (
-			<div className="card m-3 summary-active" key={index}>
-				<div className="card-body">
-					{card.image && (
-						<img
-							src={card.image}
-							width="300"
-							height="300"
-							className="rounded mx-auto d-block"
-						/>
-					)}
-					<h5 className="card-title text-dark mt-4 font-weight-bold">
-						{toTitleCase(card.name)}
-					</h5>
-					<h6 className="card-title text-dark mt-1 small font-weight-bold">
-						{card.address}
-					</h6>
-				</div>
-				<div className="card-footer">
-					Points required: <b>{toTitleCase(card.community)}</b>
-				</div>
-			</div>
-		));
-	};
+//	const renderCards = (cardData) => {
+//		return cardData.map((card, index) => (
+//			<div className="card m-3 summary-active" key={index}>
+//				<div className="card-body">
+//					{card.image && (
+//						<img
+//							src={card.image}
+//							width="300"
+//							height="300"
+//							className="rounded mx-auto d-block"
+//						/>
+//					)}
+//					<h5 className="card-title text-dark mt-4 font-weight-bold">
+//						{toTitleCase(card.name)}
+//					</h5>
+//					<h6 className="card-title text-dark mt-1 small font-weight-bold">
+//						{card.address}
+//					</h6>
+//				</div>
+//				<div className="card-footer">
+//					Points required: <b>{toTitleCase(card.community)}</b>
+//				</div>
+//			</div>
+//		));
+//	};
 
 	return (
 		<div id="browse" className="container-fluid mt-3">
@@ -126,18 +129,19 @@ function RestaurantBrowse(props) {
 							<li className="page-item"><button className="page-link">Next</button></li>
 						</ul>
 					</nav>
-					<div className="d-flex m-0 p-0 justify-content-right">
 
-					</div>
-				</div>
-			</div>
-			<div className="justify-content-center">
-				<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-					{renderCards(rewardsData)}
 				</div>
 			</div>
 		</div>
 	);
 }
+//					<div className="d-flex m-0 p-0 justify-content-right">
+//
+//					</div>
+//			<div className="justify-content-center">
+//				<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+//					{renderCards(rewardsData)}
+//				</div>
+//			</div>
 
 export default RestaurantBrowse;
