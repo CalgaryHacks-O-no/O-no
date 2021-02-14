@@ -64,7 +64,7 @@ function Cards(props) {
 	};
 
 	return (
-		<div className="container justify-content-center">
+		<div id="rewards" className="container justify-content-center">
 			<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3">
 				{renderCards(rewardsData)}
 			</div>

@@ -4,13 +4,17 @@ import Leaderboards from "./Leaderboards";
 
 function MapLeaderboardScreen(props) {
 	return (
-		<div className="container-fluid mb-5">
-			<div className="row">
-				<div className="col-lg-7">
+		<div
+			id="home"
+			className="container-fluid pl-0"
+			style={{ height: "94.5vh" }}
+		>
+			<div className="row h-100">
+				<div className="col-lg-7 pl-0">
 					<MapContainer />
 				</div>
 				<div className="col-lg-3">
-					<div className="pl-4">
+					<div className="pl-4 mt-3">
 						<Leaderboards />
 					</div>
 				</div>
