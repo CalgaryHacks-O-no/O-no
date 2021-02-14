@@ -1,5 +1,5 @@
 import React from "react";
-import MapContainer from "./Maps";
+import MapContainer from "./MapContainer";
 import Leaderboards from "./Leaderboards";
 
 function MapLeaderboardScreen(props) {

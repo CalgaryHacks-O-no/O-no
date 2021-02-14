@@ -11,7 +11,9 @@ function Footer(props) {
 				className="mt-5 d-flex justify-content-center"
 				style={{ backgroundColor: "#444", color: "white" }}
 			>
-				<div className="p-5">Team O(no) - Calgary Hacks 2021</div>
+				<div className="p-5">
+					First2Fresh - Team O(no) - Calgary Hacks 2021
+				</div>
 			</div>
 		</>
 	);

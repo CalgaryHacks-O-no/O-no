@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
 import { apiKey } from "./secret";
 
@@ -8,17 +8,17 @@ function MapContainer(props) {
 
 	useEffect(() => {
 		if ("geolocation" in navigator) {
-      		console.log("Available");
-      		navigator.geolocation.getCurrentPosition(function(position) {
-      		console.log("Latitude is :", position.coords.latitude);
-      		console.log("Longitude is :", position.coords.longitude);
-      		setUserLatitude(position.coords.latitude);
-      		setUserLongitude(position.coords.longitude);
-    	});
+			console.log("Available");
+			navigator.geolocation.getCurrentPosition(function (position) {
+				console.log("Latitude is :", position.coords.latitude);
+				console.log("Longitude is :", position.coords.longitude);
+				setUserLatitude(position.coords.latitude);
+				setUserLongitude(position.coords.longitude);
+			});
 		} else {
-      		console.log("Not Available");
+			console.log("Not Available");
 		}
-	},[]);
+	}, []);
 
 	const mapStyles = {
 		width: "100%",
@@ -55,8 +55,9 @@ function MapContainer(props) {
 	];
 
 	const renderLocations = (locData) => {
-		return locData.map((rest) => (
+		return locData.map((rest, i) => (
 			<Marker
+				key={i}
 				position={{ lat: rest.latitude, lng: rest.longitude }}
 				icon="http://maps.google.com/mapfiles/ms/icons/red-dot.png"
 			/>
