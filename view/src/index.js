@@ -10,8 +10,8 @@ import Navbar from "./Navbar";
 
 ReactDOM.render(
 	<React.StrictMode>
-		<MapLeaderboardScreen />
 		<Navbar />
+		<MapLeaderboardScreen />
 		<PurchaseScreen />
 		<Cards />
 		<Footer />
