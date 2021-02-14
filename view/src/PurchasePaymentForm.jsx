@@ -6,8 +6,9 @@ function PurchasePaymentForm(props) {
 	const[name, setName] = useState("");
 	const[email, setEmail] = useState("");
 
-	const onSubmit = () => {
-		console.log("!!! submitted");
+	const onSubmit = (event) => {
+		event.preventDefault();
+		console.log(`${name}`);
 		//
 		// headers: {
 		//	'Content-Type': 'application/json',
