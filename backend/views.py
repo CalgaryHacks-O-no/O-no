@@ -1,11 +1,13 @@
 from django.shortcuts import render
-
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator
 from . import business_licenses, community_import
 from django.apps import apps
 from .models import *
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+import math
 
 # Create your views here.
 
@@ -60,6 +62,7 @@ def update_model(request, model_name, model_id):
 
     return JsonResponse(instance.json_data())
 
+
 def imp(request):
     return HttpResponse("sup")
 
@@ -75,14 +78,28 @@ def update_restaurants(request):
 
 
 def get_restaurants_in_community(request, community_name):
-    community_instance = Community.objects.get(name=community_name)
-    instances = Restaurant.objects.filter(community=community_instance)
+    page = 1
+    if request.GET.get('page'):
+        page = int(request.GET['page'])
+
+    per_page = 16
 
     something = {
         "restaurants": []
     }
 
-    for instance in instances:
-        something["restaurants"].append(instance.json_data())
+    try:
+        instances = Restaurant.objects.filter(community__name=community_name).order_by('name')
+        length = instances.count()
+        if length > 0:
+            pages = int(math.ceil(length/per_page))
+            start = (page-1)*per_page
+            end = (page*per_page) - 1
+            something["pages"] = pages
+            for restaurant in instances[start:end]:
+                something["restaurants"].append(restaurant.json_data())
+
+    except ObjectDoesNotExist:
+        pass
 
     return JsonResponse(something)

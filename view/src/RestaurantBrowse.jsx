@@ -1,8 +1,22 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { toTitleCase } from "./utils";
+import Select from 'react-select'
 
 function RestaurantBrowse(props) {
-	const community = "CROWFOOT";
+	const { communities, currentCommunity } = props;
+	const [search, setSearch] = useState([]);
+	const [searchDefault, setSearchDefault] = useState(0)
+
+	useEffect(()=>{
+		const formatted = communities.map(item => {
+			const container = {};
+			container['label'] = item.name;
+			container['value'] = item;
+			return container;
+		});
+		setSearch(formatted);
+		setSearchDefault(formatted.find(item => item.value.id===currentCommunity));
+	},[props.communities, props.currentCommunity]);
 
 	const rewardsData = [
 		{
@@ -14,6 +28,10 @@ function RestaurantBrowse(props) {
 			community: "CROWFOOT",
 		},
 	];
+
+	const performSearch = (value) => {
+		console.log(value);
+	}
 
 	const renderCards = (cardData) => {
 		return cardData.map((card, index) => (
@@ -42,29 +60,57 @@ function RestaurantBrowse(props) {
 	};
 
 	return (
-		<div id="browse" className="container mt-3">
+		<div id="browse" className="container-fluid mt-3">
 			<div className="row">
 				<div className="col-md-8">
-					<h2>{community}</h2>
+					{/*<h2>{community}</h2>*/}
 				</div>
 				<div className="col">
+					<Select className={"flex-column"}
+							options={search}
+							isSearchable={true}
+							value={searchDefault}
+							onChange={performSearch}
+					/>
+
+					<table className="table">
+						<thead>
+						<tr>
+							<th scope="col">Name</th>
+							<th scope="col">Address</th>
+							<th scope="col">Image</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<th scope="row">1</th>
+							<td>Mark</td>
+							<td>Otto</td>
+							<td>@mdo</td>
+						</tr>
+						<tr>
+							<th scope="row">2</th>
+							<td>Jacob</td>
+							<td>Thornton</td>
+							<td>@fat</td>
+						</tr>
+						<tr>
+							<th scope="row">3</th>
+							<td>Larry</td>
+							<td>the Bird</td>
+							<td>@twitter</td>
+						</tr>
+						</tbody>
+					</table>
+
+					<nav aria-label="Page navigation example">
+						<ul className="pagination">
+							<li className="page-item"><button className="page-link">Previous</button></li>
+							<li className="page-item"><button className="page-link">Next</button></li>
+						</ul>
+					</nav>
 					<div className="d-flex m-0 p-0 justify-content-right">
-						<div className="input-group mb-3">
-							<input
-								type="text"
-								className="form-control"
-								placeholder="Search by community"
-								aria-label="Search by community"
-							/>
-							<div className="input-group-append">
-								<button
-									className="btn btn-primary"
-									type="button"
-								>
-									Search
-								</button>
-							</div>
-						</div>
+
 					</div>
 				</div>
 			</div>

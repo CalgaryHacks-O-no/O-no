@@ -9,6 +9,7 @@ import RestaurantBrowse from "./RestaurantBrowse";
 function App(props) {
 	const [communities, setCommunities] = useState([]);
 	const [people, setPeople] = useState([]);
+	const [currentCommunity, setCurrentCommunity] = useState('');
 
 	let host;
 	if (
@@ -48,8 +49,8 @@ function App(props) {
 	return (
 		<>
 			<Navbar />
-			<MapLeaderboardScreen communities={communities} people={people} />
-			<RestaurantBrowse />
+			<MapLeaderboardScreen communities={communities} people={people} setCurrentCommunity={setCurrentCommunity}/>
+			<RestaurantBrowse communities={communities} currentCommunity={currentCommunity}/>
 			<PurchaseScreen url={host} />
 			<Cards />
 			<Footer />

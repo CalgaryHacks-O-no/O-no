@@ -3,7 +3,7 @@ import MapContainer from "./MapContainer";
 import Leaderboards from "./Leaderboards";
 
 function MapLeaderboardScreen(props) {
-	const { communities, people, url } = props;
+	const { communities, people, url, setCurrentCommunity } = props;
 
 	return (
 		<div
@@ -13,7 +13,7 @@ function MapLeaderboardScreen(props) {
 		>
 			<div className="row h-100">
 				<div className="col-lg-7 pl-0">
-					<MapContainer communities={communities} />
+					<MapContainer communities={communities} setCurrentCommunity={setCurrentCommunity}/>
 				</div>
 				<div className="col-lg-3">
 					<div className="pl-4 mt-3">
