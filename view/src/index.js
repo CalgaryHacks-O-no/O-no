@@ -22,9 +22,9 @@ else{
 ReactDOM.render(
 	<React.StrictMode>
 		<Navbar />
-		<MapLeaderboardScreen />
+		<MapLeaderboardScreen url={host}/>
 		<RestaurantBrowse />
-		<PurchaseScreen url = {host}/>
+		<PurchaseScreen url={host}/>
 		<Cards />
 		<Footer />
 	</React.StrictMode>,
