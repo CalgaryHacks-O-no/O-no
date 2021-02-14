@@ -142,16 +142,25 @@ class Voucher(models.Model):
         except ValueError:
             return ''
 
-# class DaddyScoreboard(models.Model):
-#     s_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-#     points =
-#
-#     def json_data(self):
-#         pass
-#
-#
-# class CommunityScoreboard(DaddyScoreboard):
-#     community = models.ForeignKey(Community, on_delete=models.PROTECT)
-#
-#
-# class UserScoreboard(DaddyScoreboard):
+
+class CommunityScoreboard(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    community = models.ForeignKey(Community, on_delete=models.PROTECT)
+    points = models.PositiveIntegerField(blank=True)
+
+    def update_points(self):
+        total_points = 0
+        community_purchases = Purchase.objects.filter(community=self.community)
+        for community_purchase in community_purchases:
+            total_points += community_purchase.point_amount
+        self.points = total_points
+        self.save()
+        return self.points
+
+    def json_data(self):
+        json_data = {
+            'id': self.id.__str__(),
+            'community': self.community.json_data(),
+            'points': self.update_points(),
+        }
+        return json_data
