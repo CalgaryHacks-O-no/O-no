@@ -1,11 +1,21 @@
-import React from "react";
+import React, {useState} from "react";
+import CSRFToken from "./CSRFToken";
 
 function PurchasePaymentForm(props) {
+
+	const[name, setName] = useState("");
+	const[email, setEmail] = useState("");
+
 	const onSubmit = () => {
 		console.log("!!! submitted");
+		//
+		// headers: {
+		//	'Content-Type': 'application/json',
+		// 	'X-CSRFToken': e.target.csrfmiddlewaretoken.value
+		// }
 	};
 
-	const basicField = (id, desc, type = "text") => (
+	const basicField = (id, desc, hook, type = "text") => (
 		<div className="form-group row">
 			<label htmlFor={id} className="col-sm-3 col-form-label">
 				{desc}
@@ -16,16 +26,19 @@ function PurchasePaymentForm(props) {
 					className="form-control"
 					id={id}
 					aria-describedby={desc}
+					onChange={e => hook(e.target.value)}
 				/>
 			</div>
 		</div>
 	);
 
+
 	return (
 		<div className="container">
 			<form onSubmit={onSubmit}>
-				{basicField("name", "Name")}
-				{basicField("email", "Email", "email")}
+				<CSRFToken/>
+				{basicField("name", "Name", setName)}
+				{basicField("email", "Email", setEmail, "email", )}
 				<div className="form-group row">
 					<label htmlFor="name" className="col-sm-3 col-form-label">
 						Tip amount

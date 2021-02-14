@@ -29,6 +29,8 @@ class Customer (AbstractUser):
 class Community (models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.TextField(blank=False)
+    location = models.TextField(blank=False)
+    sector = models.CharField(max_length=32)
 
     class Meta:
         verbose_name = "Community"
@@ -38,7 +40,9 @@ class Community (models.Model):
         json_data = {
             'id': self.id.__str__(),
             'name': self.name,
-            'points': self.calc_points()
+            'points': self.calc_points(),
+            'location': self.location,
+            'sector': self.sector
         }
         return json_data
 
