@@ -118,15 +118,15 @@ function PurchasePaymentForm(props) {
 					</div>
 				</div>
 				{basicField("creditCard", "Credit Card", setCreditCard)}
-				<div class="form-check">
+				<div className="form-check">
 					<input
-						class="form-check-input"
+						className="form-check-input"
 						type="checkbox"
 						value=""
 						id="pickupCheck"
 						onChange={(e) => setCurbsidePickup(e.target.checked)}
 					/>
-					<label class="form-check-label" for="pickupCheck">
+					<label className="form-check-label" htmlFor="pickupCheck">
 						Curbside pickup
 					</label>
 				</div>

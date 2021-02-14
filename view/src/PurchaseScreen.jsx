@@ -7,8 +7,8 @@ function PurchaseScreen(props) {
 	const { url } = props;
 
 	const [price, setPrice] = useState(20);
-	const [tip, setTip] = useState(0);
-	const [curbsidePickup, setCurbsidePickup] = useState(false);
+	const [tip, setTip] = useState(3);
+	const [curbsidePickup, setCurbsidePickup] = useState(true);
 	const [tipInput, setTipInput] = useState("");
 	const [tipMode, setTipMode] = useState("dollars");
 
