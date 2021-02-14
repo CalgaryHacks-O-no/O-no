@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import PurchaseDetails from "./PurchaseDetails";
 import PurchasePaymentForm from "./PurchasePaymentForm";
 import PointsBreakdown from "./PointsBreakdown";
+import CSRFToken from "./CSRFToken";
 
 function PurchaseScreen(props) {
-	const { url } = props;
+	const { url, currentCommunity, orderRestaurant } = props;
 
 	// const []
 
 	const onSubmit = (event) => {
-		const csrfToken = CSRFToken;
 		event.preventDefault();
 		console.log(`${name}`);
 
@@ -21,9 +21,9 @@ function PurchaseScreen(props) {
 			},
 			body: JSON.stringify({
 				content: {
-					restaurant_id: "006fda11bedf4b2abb8f9f3d885dc850",
-					community_id: "c7c20fd26de34f02ba9e16b58a64af8f",
-					point_amount: 42069,
+					restaurant_id: orderRestaurant,
+					community_id: currentCommunity.id,
+					point_amount: 264,
 				},
 			}),
 		}).then((value) => console.log(value.json()));
