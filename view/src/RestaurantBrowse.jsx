@@ -1,8 +1,24 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { toTitleCase } from "./utils";
+import Select from 'react-select'
 
 function RestaurantBrowse(props) {
-	const community = "CROWFOOT";
+	const { communities, currentCommunity, url, setCommRestaurants } = props;
+	const [search, setSearch] = useState([]);
+	const [restaurants, setRestaurants] = useState([]);
+	const [searchDefault, setSearchDefault] = useState(0)
+
+	useEffect(()=>{
+		const formatted = communities.map(item => {
+			const container = {};
+			container['label'] = item.name;
+			container['value'] = item;
+			return container;
+		});
+		setSearch(formatted);
+		setSearchDefault(formatted.find(item => item.value.id===currentCommunity.id));
+		getRestaurants(currentCommunity.name);
+	},[props.communities, props.currentCommunity]);
 
 	const rewardsData = [
 		{
@@ -14,6 +30,35 @@ function RestaurantBrowse(props) {
 			community: "CROWFOOT",
 		},
 	];
+
+	const getRestaurants = (community) => {
+		if (!community) {
+			return;
+		}
+
+		fetch(`${url}/api/view/restaurant/${community}`, {
+			method: "GET",
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				setRestaurants(data.restaurants);
+				setCommRestaurants(data.restaurants);
+			});
+	}
+
+	const performSearch = (value) => {
+		getRestaurants(value.value.name);
+		setSearchDefault(search.find(item => item.value.id===value.id));
+	};
+
+	const renderRestaurantTable = () => {
+		return restaurants.map((restaurant) => (
+			<tr key={restaurant.id}>
+				<td>{toTitleCase(restaurant.name)}</td>
+				<td>{toTitleCase(restaurant.address)}</td>
+				<td><button className="btn btn-primary">Order</button></td>
+			</tr>));
+	};
 
 	const renderCards = (cardData) => {
 		return cardData.map((card, index) => (
@@ -42,29 +87,40 @@ function RestaurantBrowse(props) {
 	};
 
 	return (
-		<div id="browse" className="container mt-3">
+		<div id="browse" className="container-fluid mt-3">
 			<div className="row">
 				<div className="col-md-8">
-					<h2>{community}</h2>
+					{/*<h2>{community}</h2>*/}
 				</div>
 				<div className="col">
+					<Select className={"flex-column"}
+							options={search}
+							isSearchable={true}
+							value={searchDefault}
+							onChange={performSearch}
+					/>
+
+					<table className="table">
+						<thead>
+						<tr>
+							<th scope="col">Name</th>
+							<th scope="col">Address</th>
+							<th scope="col">Order</th>
+						</tr>
+						</thead>
+						<tbody>
+						{renderRestaurantTable()}
+						</tbody>
+					</table>
+
+					<nav aria-label="Page navigation example">
+						<ul className="pagination">
+							<li className="page-item"><button className="page-link">Previous</button></li>
+							<li className="page-item"><button className="page-link">Next</button></li>
+						</ul>
+					</nav>
 					<div className="d-flex m-0 p-0 justify-content-right">
-						<div className="input-group mb-3">
-							<input
-								type="text"
-								className="form-control"
-								placeholder="Search by community"
-								aria-label="Search by community"
-							/>
-							<div className="input-group-append">
-								<button
-									className="btn btn-primary"
-									type="button"
-								>
-									Search
-								</button>
-							</div>
-						</div>
+
 					</div>
 				</div>
 			</div>
