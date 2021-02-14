@@ -1,4 +1,5 @@
 import React from "react";
+import fresh from "./assets/first2fresh.png";
 
 function Navbar(props) {
 	return (
@@ -7,6 +8,13 @@ function Navbar(props) {
 			style={{ backgroundColor: "rgb(8, 133, 41)" }}
 		>
 			<a className="navbar-brand" href="#">
+				<img
+					src={fresh}
+					width="30"
+					height="30"
+					className="d-inline-block align-top mr-2"
+					alt=""
+				/>
 				First2Fresh
 			</a>
 			<button
