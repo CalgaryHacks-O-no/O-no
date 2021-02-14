@@ -11,6 +11,7 @@ function App(props) {
 	const [commRestaurants, setCommRestaurants] = useState([]);
 	const [people, setPeople] = useState([]);
 	const [currentCommunity, setCurrentCommunity] = useState({});
+	const [orderRestaurant, setOrderRestaurant] = useState();
 
 	let host;
 	if (
@@ -57,8 +58,13 @@ function App(props) {
 			<RestaurantBrowse url={host}
 							  communities={communities}
 							  currentCommunity={currentCommunity}
-							  setCommRestaurants={setCommRestaurants} />
-			<PurchaseScreen url={host} />
+							  setCommRestaurants={setCommRestaurants}
+							  setOrderRestaurant={setOrderRestaurant}
+			/>
+			<PurchaseScreen url={host}
+							currentCommunity={currentCommunity}
+							orderRestaurant={orderRestaurant}
+			/>
 			<Cards />
 			<Footer />
 		</>
