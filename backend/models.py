@@ -1,4 +1,6 @@
+import json
 import os
+import ast
 import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -36,14 +38,18 @@ class Community(models.Model):
         verbose_name = "Community"
         verbose_name_plural = "Communities"
 
-    def parse_raw_polygon_data(self):
-        coords = []
+    def revert_stringify(self):
+        x = ast.literal_eval(self.location)
+        return x
+
+    def raw_polygon_data_to_list(self):
         polygon = self.location
+        coords = []
         polygon = polygon.split('POLYGON ((')[1].split('))')[0]
         lngs_lats = polygon.split(', ')
         for lng_lat in lngs_lats:
             lng, lat = lng_lat.split()
-            coords.append({'lat': lat, 'lng': lng})
+            coords.append({'lat': float(lat), 'lng': float(lng)})
         return coords
 
     def json_data(self):
@@ -51,7 +57,7 @@ class Community(models.Model):
             'id': self.id.__str__(),
             'name': self.name,
             'points': self.calc_points(),
-            'location': self.parse_raw_polygon_data(),
+            'location': self.revert_stringify(),
             'sector': self.sector,
         }
         return json_data
@@ -134,6 +140,16 @@ class Voucher(models.Model):
         except ValueError:
             return ''
 
-# class Scoreboard(models.Model):
+# class DaddyScoreboard(models.Model):
 #     s_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+#     points =
+#
+#     def json_data(self):
+#         pass
+#
+#
+# class CommunityScoreboard(DaddyScoreboard):
 #     community = models.ForeignKey(Community, on_delete=models.PROTECT)
+#
+#
+# class UserScoreboard(DaddyScoreboard):
