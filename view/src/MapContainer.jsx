@@ -8,10 +8,10 @@ import {
 } from "google-maps-react";
 import { apiKey } from "./secret";
 import Spinner from "./Spinner";
+import containsLocation from "./containsLocation";
 
 function MapContainer(props) {
-	const { communities } = props;
-
+	const { communities, setCurrentCommunity, commRestaurants } = props;
 	const [geolocationLoaded, setGeolocationLoaded] = useState(false);
 	const [userLongitude, setUserLongitude] = useState(null); // Default should be: -114.071
 	const [userLatitude, setUserLatitude] = useState(null); // Default should be: 51.0447
@@ -19,19 +19,17 @@ function MapContainer(props) {
 	useEffect(() => {
 		if ("geolocation" in navigator) {
 			navigator.geolocation.getCurrentPosition(function (position) {
-				console.log("Latitude is :", position.coords.latitude);
-				console.log("Longitude is :", position.coords.longitude);
 				setUserLatitude(position.coords.latitude);
 				setUserLongitude(position.coords.longitude);
 				setGeolocationLoaded(true);
 			});
 		} else {
-			console.log("Geolocation Not Available");
 			setUserLatitude(51.0447);
 			setUserLongitude(-114.071);
 			setGeolocationLoaded(true);
 		}
-	}, []);
+		findCurrentCommunity();
+	}, [props.communities], [props.commRestaurants]);
 
 	const mapStyles = {
 		width: "100%",
@@ -46,20 +44,6 @@ function MapContainer(props) {
 		purple: "http://maps.google.com/mapfiles/ms/icons/purple-dot.png",
 	};
 
-	let restaurantLocationsData = [
-		{
-			latitude: "51.00",
-			longitude: "-114.00",
-			name: "Bobs Burgers",
-			type: "restaurant",
-		},
-		{
-			latitude: "51.02",
-			longitude: "-114.1",
-			name: "Ham Burgers",
-			type: "restaurant",
-		},
-	];
 	// Debug: Show the community the user is in
 	// if (geolocationLoaded) {
 	// 	restaurantLocationsData.push({
@@ -70,14 +54,39 @@ function MapContainer(props) {
 	// 	});
 	// }
 
-	const renderLocations = (locData) => {
-		return locData.map((rest, i) => (
+	const renderLocations = () => {
+		const data = commRestaurants.map(item => {{
+			const container = {};
+			container['latitude'] = item.latitude.toString();
+			container['longitude'] = item.longitude.toString();
+			container['name'] = item.name;
+			container['type'] = 'restaurant';
+			return container;
+		}})
+
+		return data.map((rest, i) => (
 			<Marker
 				key={i}
 				position={{ lat: rest.latitude, lng: rest.longitude }}
 				icon="http://maps.google.com/mapfiles/ms/icons/red-dot.png"
 			/>
 		));
+	};
+
+	const findCurrentCommunity = () => {
+		if (!communities || !communities.length) {
+			return;
+		}
+		let currCommunity = {}
+		const currLoc = new window.google.maps.LatLng(userLatitude, userLongitude);
+		for (let community of communities){
+			const shape = new window.google.maps.Polygon({paths: community.location});
+			if (containsLocation(currLoc, shape)){
+				currCommunity = community;
+				break;
+			}
+		}
+		setCurrentCommunity({'id':currCommunity.id,'name':currCommunity.name});
 	};
 
 	const renderPolygons = () => {
@@ -121,7 +130,7 @@ function MapContainer(props) {
 				// initialCenter={{ lat: 51.0447, lng: -114.0719 }}
 				initialCenter={{ lat: userLatitude, lng: userLongitude }}
 			>
-				{renderLocations(restaurantLocationsData)}
+				{renderLocations()}
 				{renderPolygons()}
 			</Map>
 		</div>
