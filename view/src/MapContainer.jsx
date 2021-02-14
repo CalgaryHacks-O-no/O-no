@@ -8,9 +8,10 @@ import {
 } from "google-maps-react";
 import { apiKey } from "./secret";
 import Spinner from "./Spinner";
+import containsLocation from "./containsLocation";
 
 function MapContainer(props) {
-	const { communities } = props;
+	const { communities, setCurrentCommunity, commRestaurants } = props;
 
 	const [geolocationLoaded, setGeolocationLoaded] = useState(false);
 	const [userLongitude, setUserLongitude] = useState(null); // Default should be: -114.071
@@ -19,19 +20,18 @@ function MapContainer(props) {
 	useEffect(() => {
 		if ("geolocation" in navigator) {
 			navigator.geolocation.getCurrentPosition(function (position) {
-				console.log("Latitude is :", position.coords.latitude);
-				console.log("Longitude is :", position.coords.longitude);
 				setUserLatitude(position.coords.latitude);
 				setUserLongitude(position.coords.longitude);
 				setGeolocationLoaded(true);
 			});
 		} else {
-			console.log("Geolocation Not Available");
 			setUserLatitude(51.0447);
 			setUserLongitude(-114.071);
 			setGeolocationLoaded(true);
 		}
-	}, []);
+		findCurrentCommunity();
+		createLocationData();
+	}, [props.communities], [props.commRestaurants]);
 
 	const mapStyles = {
 		width: "100%",
@@ -60,6 +60,18 @@ function MapContainer(props) {
 			type: "restaurant",
 		},
 	];
+
+	const createLocationData = () => {
+		restaurantLocationsData = commRestaurants.map(item => {{
+			const container = {};
+			container['latitude'] = item.latitude;
+			container['longitude'] = item.longitude;
+			container['name'] = item.name;
+			container['type'] = 'restaurant';
+			return container;
+		}});
+
+	};
 	// Debug: Show the community the user is in
 	// if (geolocationLoaded) {
 	// 	restaurantLocationsData.push({
@@ -78,6 +90,22 @@ function MapContainer(props) {
 				icon="http://maps.google.com/mapfiles/ms/icons/red-dot.png"
 			/>
 		));
+	};
+
+	const findCurrentCommunity = () => {
+		if (!communities || !communities.length) {
+			return;
+		}
+		let currCommunity = {}
+		const currLoc = new window.google.maps.LatLng(userLatitude, userLongitude);
+		for (let community of communities){
+			const shape = new window.google.maps.Polygon({paths: community.location});
+			if (containsLocation(currLoc, shape)){
+				currCommunity = community;
+				break;
+			}
+		}
+		setCurrentCommunity({'id':currCommunity.id,'name':currCommunity.name});
 	};
 
 	const renderPolygons = () => {
