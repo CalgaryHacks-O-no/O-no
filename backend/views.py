@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from . import business_licenses
+from . import business_licenses, community_import
 from django.apps import apps
 from .models import *
 from django.http import HttpResponse, JsonResponse
@@ -58,7 +58,7 @@ def imp(request):
 
 
 def update_communities(request):
-    business_licenses.add_communities_to_database()
+    community_import.update_communities_in_database()
     return HttpResponse('Updated communities')
 
 
