@@ -15,7 +15,7 @@ class Customer (AbstractUser):
         json_data = {
             'id': self.id.__str__(),
             'username': self.username,
-            'points': self.calc_points
+            'points': self.calc_points()
         }
         return json_data
 
@@ -60,7 +60,8 @@ class Restaurant (models.Model):
     image = models.ImageField(
         upload_to='restaurants/',
         validators=[validate_image_file_extension], blank=True)
-    community = models.ForeignKey(Community, on_delete=models.CASCADE, null=False)
+    community = models.ForeignKey(
+        Community, on_delete=models.CASCADE, null=False)
     longitude = models.FloatField()
     latitude = models.FloatField()
 
@@ -105,7 +106,8 @@ class Voucher (models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.TextField(blank=False)
     description = models.TextField(blank=False)
-    image = models.ImageField(upload_to='vouchers/', validators=[validate_image_file_extension], blank=True)
+    image = models.ImageField(
+        upload_to='vouchers/', validators=[validate_image_file_extension], blank=True)
     location = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
 
     def json_data(self):

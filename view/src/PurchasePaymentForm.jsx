@@ -6,12 +6,29 @@ function PurchasePaymentForm(props) {
 	const[name, setName] = useState("");
 	const[email, setEmail] = useState("");
 
+
+
+
 	const onSubmit = (event) => {
+		const data = {
+			"points" : 69
+		}
+		const csrfToken = CSRFToken;
 		event.preventDefault();
 		console.log(`${name}`);
-		//
+		console.log(fetch('http://127.0.0.1:8000/api/view/Customer'));
+
+		//,{
+		// 	method: 'POST',	
+		// 	headers: {
+		// 		'Content-Type':	'application/json',
+		// 		'X-CSRFToken':	csrfToken
+		// 	},
+		// 	body: JSON.stringify(data)
+		// }
+		
 		// headers: {
-		//	'Content-Type': 'application/json',
+		// 	'Content-Type': 'application/json',
 		// 	'X-CSRFToken': e.target.csrfmiddlewaretoken.value
 		// }
 	};
