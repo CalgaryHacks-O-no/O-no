@@ -273,3 +273,5 @@ sketch
 view/static/main.js
 Ono/secret.py
 webhooks/hooks.json
+
+view/src/secret.js
