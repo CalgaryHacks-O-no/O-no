@@ -24,43 +24,15 @@ def get_restaurant_indexes(df: pandas.DataFrame) -> set:
     return restaurant_idxs
 
 
-def get_restaurant_communities(df: pandas.DataFrame, restaurant_idxs: set) -> set:
-    # separate by community
-    community_names = {'default'}
-    communities = df['COMDISTNM']
-    for idx in restaurant_idxs:
-        community = communities[idx]
-        if isinstance(community, str):
-            community_names.add(community.split(',')[0].strip())
-    return community_names
-
-
-def add_communities_to_database() -> None:
-    df = read_business_licenses()
-    names = get_restaurant_communities(df, get_restaurant_indexes(df))
-    for name in names:
-        same_names = internal_models.Community.objects.filter(name=name)
-        if len(same_names) == 0:
-            new_community = internal_models.Community(name=name)
-            new_community.save()
-        else:
-            community_to_alter = same_names[0]
-            # remove extras
-            if len(same_names) > 1:
-                for dup in same_names:
-                    dup.delete()
-            # do nothing there are no other attributes to alter
-    return None
-
-
-def get_community_obj_from_name(name: str) -> internal_models.Community:
-    community = internal_models.Community.objects.filter(name=name)[0]
+def get_community_obj_from_name(name: str):
+    community = internal_models.Community.objects.filter(name=name)
     return community
 
 
 def add_restaurants_to_database() -> None:
     print(len(internal_models.Restaurant.objects.all()))
-    # internal_models.Restaurant.objects.all().delete()
+    internal_models.Restaurant.objects.all().delete()
+    print(len(internal_models.Restaurant.objects.all()))
     # return
     df = read_business_licenses()
     idxs = get_restaurant_indexes(df)
@@ -75,7 +47,10 @@ def add_restaurants_to_database() -> None:
         community = communities[idx]
         if not isinstance(community, str):
             continue
-        community = get_community_obj_from_name(community.split(',')[0].strip())
+        matching_communities = get_community_obj_from_name(community.split(',')[0].strip())
+        if len(matching_communities) < 1:
+            continue
+        community = matching_communities[0]
         name = restaurant_names[idx]
         address = addresses[idx]
         longitude = longitudes[idx]
@@ -94,4 +69,5 @@ def add_restaurants_to_database() -> None:
         restaurant_list.add(new_restaurant)
         # print(idx)
     internal_models.Restaurant.objects.bulk_create(restaurant_list)
+    print(len(internal_models.Restaurant.objects.all()))
     return None

@@ -124,7 +124,7 @@ class Voucher (models.Model):
         except ValueError:
             return ''
 
-class Scoreboard(models.Model):
-    s_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    community = models.ForeignKey(Community, on_delete=models.PROTECT)
+# class Scoreboard(models.Model):
+#     s_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+#     community = models.ForeignKey(Community, on_delete=models.PROTECT)
 
