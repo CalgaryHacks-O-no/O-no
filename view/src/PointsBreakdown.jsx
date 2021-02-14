@@ -133,21 +133,19 @@ function PointsBreakdown(props) {
 	const canvasSize = 640;
 
 	return (
-		<div className="container my-3 mb-5">
-			<div className="d-flex justify-content-center">
-				<svg
-					className="pointsBreakdown"
-					viewBox={[
-						-canvasSize / 2,
-						-canvasSize / 2,
-						canvasSize,
-						canvasSize,
-					].join(" ")}
-					width={800}
-					height={640}
-					fontFamily="sans-serif"
-				/>
-			</div>
+		<div className="d-flex justify-content-center">
+			<svg
+				className="pointsBreakdown"
+				viewBox={[
+					-canvasSize / 2,
+					-canvasSize / 2,
+					canvasSize,
+					canvasSize,
+				].join(" ")}
+				width={800}
+				height={640}
+				fontFamily="sans-serif"
+			/>
 		</div>
 	);
 }

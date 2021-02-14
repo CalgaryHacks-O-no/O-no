@@ -65,3 +65,17 @@ def update_communities(request):
 def update_restaurants(request):
     business_licenses.add_restaurants_to_database()
     return HttpResponse('Updated restaurants')
+
+
+def get_restaurants_in_community(request, community_name):
+    community_instance = Community.objects.get(name=community_name)
+    instances = Restaurant.objects.filter(community=community_instance)
+
+    something = {
+        "restaurants": []
+    }
+
+    for instance in instances:
+        something["restaurants"].append(instance.json_data())
+
+    return JsonResponse(something)
