@@ -8,6 +8,7 @@ function Cards(props) {
 			title: "Bobs Burgers",
 			location: "2764 Glenmore Trail, Calgary, AB T2C 2E6",
 			description: "Buy 3 burgers, get one for free!",
+			pointsNeeded: 300,
 		},
 		{
 			image:
@@ -15,6 +16,7 @@ function Cards(props) {
 			title: "Vintage Chophouse and Tavern",
 			location: "320 11 Ave SW, Calgary, AB T2R 0C5",
 			description: "Spend over $100, get $20 off the purchase.",
+			pointsNeeded: 250,
 		},
 		{
 			image:
@@ -22,6 +24,7 @@ function Cards(props) {
 			title: "Wow Chicken",
 			location: "324 10 St NW, Calgary, AB T2N 1V8",
 			description: "Get $20 off of your next purchase!",
+			pointsNeeded: 300,
 		},
 		{
 			image:
@@ -29,6 +32,7 @@ function Cards(props) {
 			title: "The Den and Black Lounge",
 			location: "500 University Dr NW, Calgary, AB T2N 1N4",
 			description: "2 Free pitchers of Den Lager.",
+			pointsNeeded: 225,
 		},
 	];
 
@@ -48,9 +52,12 @@ function Cards(props) {
 					<h6 className="card-title text-dark mt-1 small font-weight-bold">
 						{card.location}
 					</h6>
-					<h6 className="card-description text-dark mt-2 small font-weight-normal">
+					<p className="card-description text-dark mt-2 font-weight-normal">
 						{card.description}
-					</h6>
+					</p>
+				</div>
+				<div className="card-footer">
+					Points required: <b>{card.pointsNeeded}</b>
 				</div>
 			</div>
 		));
