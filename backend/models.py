@@ -2,6 +2,7 @@ import json
 import os
 import ast
 import uuid
+import random
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import validate_image_file_extension
@@ -66,6 +67,7 @@ class Community(models.Model):
         total = 0
         for purchase in Purchase.objects.filter(community_id=self.id):
             total += purchase.point_amount
+        total = random.randint(10,50000)
         return total
 
 
