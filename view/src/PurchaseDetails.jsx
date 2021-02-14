@@ -43,8 +43,6 @@ function PurchaseDetails(props) {
 		0
 	);
 
-	console.log("!!! tip: ", tip); // FIXME: delete
-
 	return (
 		<>
 			<table className="table table-hover">

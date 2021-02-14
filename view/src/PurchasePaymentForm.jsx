@@ -2,29 +2,23 @@ import React, { useEffect, useState } from "react";
 import CSRFToken from "./CSRFToken";
 
 function PurchasePaymentForm(props) {
-	const { onSubmit, priceState, tipState, curbsidePickupState } = props;
+	const {
+		onSubmit,
+		priceState,
+		tipState,
+		tipInputState,
+		tipModeState,
+		curbsidePickupState,
+	} = props;
 	const [price, setPrice] = priceState;
 	const [tip, setTip] = tipState;
 	const [curbsidePickup, setCurbsidePickup] = curbsidePickupState;
+	const [tipInput, setTipInput] = tipInputState;
+	const [tipMode, setTipMode] = tipModeState;
 
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
-
-	const [tipInput, setTipInput] = useState(0);
-	const [tipMode, setTipMode] = useState("dollars");
-
-	useEffect(() => {
-		if (tipInput == "" || parseFloat(tipInput) <= 0) {
-			setTip(0);
-			return;
-		}
-
-		if (tipMode === "dollars") {
-			setTip(parseFloat(tipInput));
-		} else {
-			setTip(parseFloat(tipInput) * 0.01 * price);
-		}
-	}, [tipInput, tipMode]);
+	const [creditCard, setCreditCard] = useState("");
 
 	const basicField = (id, desc, hook, type = "text") => (
 		<div className="form-group row">
@@ -123,8 +117,22 @@ function PurchasePaymentForm(props) {
 						</div>
 					</div>
 				</div>
+				{basicField("creditCard", "Credit Card", setCreditCard)}
+				<div class="form-check">
+					<input
+						class="form-check-input"
+						type="checkbox"
+						value=""
+						id="pickupCheck"
+						onChange={(e) => setCurbsidePickup(e.target.checked)}
+					/>
+					<label class="form-check-label" for="pickupCheck">
+						Curbside pickup
+					</label>
+				</div>
 				<small className="form-text text-muted">
-					100% of all funds go to your local restaurants 😊
+					By choosing curbside pickup, you help your local restaurants
+					and get a free point bonus! 😊
 				</small>
 				<br />
 				<button type="submit" className="btn btn-primary">

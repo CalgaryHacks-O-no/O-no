@@ -2,50 +2,54 @@ import React, { useEffect } from "react";
 import * as d3 from "d3";
 
 function PointsBreakdown(props) {
+	const { price, tip, curbsidePickup } = props;
+
 	const priceBeforeTax = Math.ceil(55.0);
-	const tip = Math.ceil(priceBeforeTax * 0.15);
-	const tipMultiplied = tip * 2;
+	const tipMultiplied = parseFloat(Math.ceil(tip)) * 2;
 	const visitMultiplier = 3;
-	const curbside = 15;
+	const curbsideBonus = curbsidePickup ? 15 : 0;
 
 	useEffect(() => {
 		const totalPoints =
-			(priceBeforeTax + tipMultiplied + curbside) * visitMultiplier;
+			(priceBeforeTax + tipMultiplied + curbsideBonus) * visitMultiplier;
 		const priceProp = (priceBeforeTax / totalPoints) * 0.9;
 		const tipProp = tipMultiplied / totalPoints;
-		const curbsideProp = curbside / totalPoints;
+		const curbsideProp = curbsideBonus / totalPoints;
 		const visitProp = (priceProp + tipProp) * (visitMultiplier - 0.9);
 
-		const pieData = [
-			{
+		let pieData = {
+			price: {
 				key: "price",
 				text: priceBeforeTax,
 				label: "Price",
 				value: priceProp,
 				fill: "#feb347",
 			},
-			{
-				key: "tip",
-				text: tipMultiplied,
-				label: "Tip",
-				value: tipProp,
-				fill: "rgb(15, 232, 142)",
-			},
-			{
-				key: "curbside",
-				text: curbside,
-				label: "Curbside Pickup",
-				value: curbsideProp,
-				fill: "rgb(180, 52, 235)",
-			},
-			{
-				key: "visits",
+			tip:
+				tip > 0
+					? {
+							key: "tip",
+							text: tipMultiplied,
+							label: "Tip",
+							value: tipProp,
+							fill: "rgb(15, 232, 142)",
+					  }
+					: null,
+			visits: {
 				text: `${visitMultiplier}x`,
 				label: "New Visit",
 				value: visitProp,
 				fill: "rgb(15, 137, 252)",
 			},
-		];
+			curbsidePickup: curbsidePickup
+				? {
+						text: curbside,
+						label: "Curbside Pickup",
+						value: curbsideProp,
+						fill: "rgb(180, 52, 235)",
+				  }
+				: null,
+		};
 
 		const pie = d3.pie().value((d) => d.value);
 		const pieArcData = pie(pieData);

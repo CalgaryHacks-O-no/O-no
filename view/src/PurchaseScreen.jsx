@@ -9,10 +9,29 @@ function PurchaseScreen(props) {
 	const [price, setPrice] = useState(20);
 	const [tip, setTip] = useState(0);
 	const [curbsidePickup, setCurbsidePickup] = useState(false);
+	const [tipInput, setTipInput] = useState("");
+	const [tipMode, setTipMode] = useState("dollars");
 
 	useEffect(() => {
-		console.log("tip: ", tip);
-	}, [tip]);
+		console.log("curbside: ", curbsidePickup);
+	}, [curbsidePickup]);
+
+	useEffect(() => {
+		calculateTip();
+	}, [tipInput, tipMode]);
+
+	const calculateTip = () => {
+		if (tipInput == "" || parseFloat(tipInput) <= 0) {
+			setTip(0);
+			return;
+		}
+
+		if (tipMode === "dollars") {
+			setTip(parseFloat(tipInput));
+		} else {
+			setTip(parseFloat(tipInput) * 0.01 * price);
+		}
+	};
 
 	const onSubmit = (event) => {
 		const csrfToken = CSRFToken;
@@ -42,7 +61,11 @@ function PurchaseScreen(props) {
 
 	return (
 		<div id="order" className="container mb-5">
-			<PointsBreakdown />
+			<PointsBreakdown
+				price={price}
+				tip={tip}
+				curbsidePickup={curbsidePickup}
+			/>
 			<div className="row">
 				<div className="col-lg-6">
 					<PurchaseDetails price={price} tip={tip} />
@@ -53,6 +76,8 @@ function PurchaseScreen(props) {
 							onSubmit={onSubmit}
 							priceState={[price, setPrice]}
 							tipState={[tip, setTip]}
+							tipInputState={[tipInput, setTipInput]}
+							tipModeState={[tipMode, setTipMode]}
 							curbsidePickupState={[
 								curbsidePickup,
 								setCurbsidePickup,
