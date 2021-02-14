@@ -13,12 +13,15 @@ function PurchaseScreen(props) {
 	const [tipInput, setTipInput] = useState("");
 	const [tipMode, setTipMode] = useState("dollars");
 
+	const [totalPoints, setTotalPoints] = useState(155);
+
 	useEffect(() => {
 		console.log("curbside: ", curbsidePickup);
 	}, [curbsidePickup]);
 
 	useEffect(() => {
 		calculateTip();
+		// calcPoints();
 	}, [tipInput, tipMode]);
 
 	const calculateTip = () => {
@@ -34,9 +37,27 @@ function PurchaseScreen(props) {
 		}
 	};
 
+	const calcPoints = () => {
+		const priceBeforeTax = Math.ceil(price);
+		const tipMultiplied = parseFloat(Math.ceil(tip)) * 2;
+		const visitMultiplier = 3;
+		const curbsideBonus = curbsidePickup ? 15 : 0;
+
+		const totalPoints =
+			(priceBeforeTax + tipMultiplied + curbsideBonus) * visitMultiplier;
+		const priceProp = (priceBeforeTax / totalPoints) * 0.9;
+		const tipProp = tipMultiplied / totalPoints;
+		const curbsideProp = curbsideBonus / totalPoints;
+		const visitProp = (priceProp + tipProp) * (visitMultiplier - 0.9);
+
+		return setTotalPoints(totalPoints);
+	};
+
 	const onSubmit = (event) => {
 		event.preventDefault();
 		console.log(`${name}`);
+
+		console.log("total points", totalPoints);
 
 		fetch(url + "/api/create/purchase", {
 			method: "POST",
@@ -48,7 +69,7 @@ function PurchaseScreen(props) {
 				content: {
 					restaurant_id: orderRestaurant,
 					community_id: currentCommunity.id,
-					point_amount: 264,
+					point_amount: totalPoints,
 				},
 			}),
 		}).then((value) => console.log(value.json()));
@@ -65,6 +86,8 @@ function PurchaseScreen(props) {
 				price={price}
 				tip={tip}
 				curbsidePickup={curbsidePickup}
+				totalPoints={totalPoints}
+				setTotalPoints={setTotalPoints}
 			/>
 			<div className="row">
 				<div className="col-lg-6">
