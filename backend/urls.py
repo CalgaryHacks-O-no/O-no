@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('view/<str:model_name>', views.get_all_data),
     path('view/<str:model_name>/<uuid:restaurant_id>', views.get_data),
-    path('fuckit', views.imp)
+    path('update_communities', views.update_communities),
+    path('update_restaurants', views.update_restaurants),
 ]
 
