@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import * as d3 from "d3";
 
 function PointsBreakdown(props) {
-	const { price, tip, curbsidePickup } = props;
+	const { price, tip, curbsidePickup, totalPoints, setTotalPoints } = props;
 
 	useEffect(() => {
 		const priceBeforeTax = Math.ceil(price);
@@ -10,12 +10,13 @@ function PointsBreakdown(props) {
 		const visitMultiplier = 3;
 		const curbsideBonus = curbsidePickup ? 15 : 0;
 
-		const totalPoints =
+		const temptotalPoints =
 			(priceBeforeTax + tipMultiplied + curbsideBonus) * visitMultiplier;
-		const priceProp = (priceBeforeTax / totalPoints) * 0.9;
-		const tipProp = tipMultiplied / totalPoints;
-		const curbsideProp = curbsideBonus / totalPoints;
+		const priceProp = (priceBeforeTax / temptotalPoints) * 0.9;
+		const tipProp = tipMultiplied / temptotalPoints;
+		const curbsideProp = curbsideBonus / temptotalPoints;
 		const visitProp = (priceProp + tipProp) * (visitMultiplier - 0.9);
+		props.setTotalPoints(temptotalPoints);
 
 		let pieContents = {
 			price: {
@@ -132,7 +133,7 @@ function PointsBreakdown(props) {
 
 		let totalPointsList = svgCanvas.selectAll(".totalPoints");
 		totalPointsList
-			.data([totalPoints])
+			.data([temptotalPoints])
 			.enter()
 			.append("text")
 			.attr("className", "totalPoints")
