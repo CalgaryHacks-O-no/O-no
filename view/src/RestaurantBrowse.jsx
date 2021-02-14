@@ -1,24 +1,34 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { toTitleCase } from "./utils";
-import Select from 'react-select'
+import Select from "react-select";
+import AboutUs from "./AboutUs";
 
 function RestaurantBrowse(props) {
-	const { communities, currentCommunity, url, setCommRestaurants, setOrderRestaurant, setCurrentCommunity } = props;
+	const {
+		communities,
+		currentCommunity,
+		url,
+		setCommRestaurants,
+		setOrderRestaurant,
+		setCurrentCommunity,
+	} = props;
 	const [search, setSearch] = useState([]);
 	const [restaurants, setRestaurants] = useState([]);
-	const [searchDefault, setSearchDefault] = useState(0)
+	const [searchDefault, setSearchDefault] = useState(0);
 
-	useEffect(()=>{
-		const formatted = communities.map(item => {
+	useEffect(() => {
+		const formatted = communities.map((item) => {
 			const container = {};
-			container['label'] = item.name;
-			container['value'] = item;
+			container["label"] = item.name;
+			container["value"] = item;
 			return container;
 		});
 		setSearch(formatted);
-		setSearchDefault(formatted.find(item => item.value.id===currentCommunity.id));
+		setSearchDefault(
+			formatted.find((item) => item.value.id === currentCommunity.id)
+		);
 		getRestaurants(currentCommunity.name);
-	},[props.communities, props.currentCommunity]);
+	}, [props.communities, props.currentCommunity]);
 
 	const rewardsData = [
 		{
@@ -44,14 +54,16 @@ function RestaurantBrowse(props) {
 				setRestaurants(data.restaurants);
 				setCommRestaurants(data.restaurants);
 			});
-	}
+	};
 
 	const performSearch = (value) => {
 		getRestaurants(value.value.name);
-		setSearchDefault(search.find(item => item.value.id===value.value.id));
+		setSearchDefault(
+			search.find((item) => item.value.id === value.value.id)
+		);
 		console.log(value.value.id);
-		console.log({'id':value.value.id,'name':value.value.name})
-		setCurrentCommunity({'id':value.value.id,'name':value.value.name})
+		console.log({ id: value.value.id, name: value.value.name });
+		setCurrentCommunity({ id: value.value.id, name: value.value.name });
 	};
 
 	const setOrderDetails = (e, value) => {
@@ -60,76 +72,92 @@ function RestaurantBrowse(props) {
 	};
 
 	const renderRestaurantTable = () => {
-		return restaurants.slice(0,15).map((restaurant) => (
+		return restaurants.slice(0, 15).map((restaurant) => (
 			<tr key={restaurant.id}>
 				<td>{toTitleCase(restaurant.name)}</td>
 				<td>{toTitleCase(restaurant.address)}</td>
-				<td><button className="btn btn-primary" value={restaurant}
-							onClick={(e) => {setOrderDetails(e, restaurant)}}>
-					Order</button></td>
-			</tr>));
+				<td>
+					<button
+						className="btn btn-primary"
+						value={restaurant}
+						onClick={(e) => {
+							setOrderDetails(e, restaurant);
+						}}
+					>
+						Order
+					</button>
+				</td>
+			</tr>
+		));
 	};
 
-//	const renderCards = (cardData) => {
-//		return cardData.map((card, index) => (
-//			<div className="card m-3 summary-active" key={index}>
-//				<div className="card-body">
-//					{card.image && (
-//						<img
-//							src={card.image}
-//							width="300"
-//							height="300"
-//							className="rounded mx-auto d-block"
-//						/>
-//					)}
-//					<h5 className="card-title text-dark mt-4 font-weight-bold">
-//						{toTitleCase(card.name)}
-//					</h5>
-//					<h6 className="card-title text-dark mt-1 small font-weight-bold">
-//						{card.address}
-//					</h6>
-//				</div>
-//				<div className="card-footer">
-//					Points required: <b>{toTitleCase(card.community)}</b>
-//				</div>
-//			</div>
-//		));
-//	};
+	//	const renderCards = (cardData) => {
+	//		return cardData.map((card, index) => (
+	//			<div className="card m-3 summary-active" key={index}>
+	//				<div className="card-body">
+	//					{card.image && (
+	//						<img
+	//							src={card.image}
+	//							width="300"
+	//							height="300"
+	//							className="rounded mx-auto d-block"
+	//						/>
+	//					)}
+	//					<h5 className="card-title text-dark mt-4 font-weight-bold">
+	//						{toTitleCase(card.name)}
+	//					</h5>
+	//					<h6 className="card-title text-dark mt-1 small font-weight-bold">
+	//						{card.address}
+	//					</h6>
+	//				</div>
+	//				<div className="card-footer">
+	//					Points required: <b>{toTitleCase(card.community)}</b>
+	//				</div>
+	//			</div>
+	//		));
+	//	};
 
 	return (
-		<div id="browse" className="container-fluid mt-3">
+		<div
+			id="browse"
+			className="container-fluid py-3"
+			style={{ backgroundColor: "rgb(201, 255, 216)" }}
+		>
 			<div className="row">
-				<div className="col-md-8">
-					{/*<h2>{community}</h2>*/}
+				<div className="col-md-7">
+					<AboutUs />
 				</div>
 				<div className="col">
-					<Select className={"flex-column"}
-							options={search}
-							isSearchable={true}
-							value={searchDefault}
-							onChange={performSearch}
+					<h1 style={{ fontFamily: "Comfortaa, cursive" }}>Browse</h1>
+					<Select
+						className={"flex-column"}
+						options={search}
+						isSearchable={true}
+						value={searchDefault}
+						onChange={performSearch}
 					/>
 
 					<table className="table">
 						<thead>
-						<tr>
-							<th scope="col">Name</th>
-							<th scope="col">Address</th>
-							<th scope="col">Order</th>
-						</tr>
+							<tr>
+								<th scope="col">Name</th>
+								<th scope="col">Address</th>
+								<th scope="col">Order</th>
+							</tr>
 						</thead>
-						<tbody>
-						{renderRestaurantTable()}
-						</tbody>
+						<tbody>{renderRestaurantTable()}</tbody>
 					</table>
 
 					<nav aria-label="Page navigation example">
 						<ul className="pagination">
-							<li className="page-item"><button className="page-link">Previous</button></li>
-							<li className="page-item"><button className="page-link">Next</button></li>
+							<li className="page-item">
+								<button className="page-link">Previous</button>
+							</li>
+							<li className="page-item">
+								<button className="page-link">Next</button>
+							</li>
 						</ul>
 					</nav>
-
 				</div>
 			</div>
 		</div>

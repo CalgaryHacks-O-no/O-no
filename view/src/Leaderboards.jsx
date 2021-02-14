@@ -93,7 +93,7 @@ function Leaderboards(props) {
 
 	return (
 		<div className="container">
-			<h3 className="text-center">Leaderboards</h3>
+			<h3 style={{ fontFamily: "Comfortaa, cursive" }}>Leaderboards</h3>
 			<table className="table">
 				<thead className="thead-light">
 					<tr>
@@ -118,7 +118,11 @@ function Leaderboards(props) {
 				</thead>
 				<tbody>
 					{/*{addRows(sortedUserData)}*/}
-					{addRows(people.concat(sortedUserData).sort((a, b) => b.points - a.points))}
+					{addRows(
+						people
+							.concat(sortedUserData)
+							.sort((a, b) => b.points - a.points)
+					)}
 				</tbody>
 			</table>
 		</div>

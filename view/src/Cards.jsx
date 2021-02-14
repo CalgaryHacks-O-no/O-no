@@ -64,9 +64,12 @@ function Cards(props) {
 	};
 
 	return (
-		<div id="rewards" className="container justify-content-center">
-			<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-				{renderCards(rewardsData)}
+		<div style={{ backgroundColor: "rgb(201, 255, 216)" }}>
+			<div id="rewards" className="container justify-content-center py-5">
+				<h1 style={{ fontFamily: "Comfortaa, cursive" }}>Rewards</h1>
+				<div className="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+					{renderCards(rewardsData)}
+				</div>
 			</div>
 		</div>
 	);
