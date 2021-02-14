@@ -8,7 +8,7 @@ import json
 # Create your views here.
 
 
-def get_data(request,model_name, model_id):
+def get_data(request, model_name, model_id):
     instance = apps.get_model('backend', model_name).objects.get(id=model_id)
     return JsonResponse(instance.json_data())
 
@@ -53,6 +53,3 @@ def update_model(request, model_name, model_id):
 
 def imp(request):
     return HttpResponse("sup")
-
-
-
