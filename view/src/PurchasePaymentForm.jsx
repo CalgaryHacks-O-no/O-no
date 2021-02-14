@@ -1,11 +1,41 @@
-import React from "react";
+import React, {useState} from "react";
+import CSRFToken from "./CSRFToken";
 
 function PurchasePaymentForm(props) {
-	const onSubmit = () => {
-		console.log("!!! submitted");
+
+	const[name, setName] = useState("");
+	const[email, setEmail] = useState("");
+
+
+
+
+	const onSubmit = (event) => {
+
+		const csrfToken = CSRFToken;
+		event.preventDefault();
+		console.log(`${name}`);
+
+		fetch(props.url + '/api/create/purchase',{
+			method: 'POST',
+			headers: {
+				'Content-Type':	'application/json',
+				'X-CSRFToken':	event.target.csrfmiddlewaretoken.value
+			},
+			body: JSON.stringify({"content" : {
+					"restaurant_id": "006fda11bedf4b2abb8f9f3d885dc850",
+					"community_id": "c7c20fd26de34f02ba9e16b58a64af8f",
+					"point_amount": 42069}})
+		}).then(value => console.log(value.json()))
+
+
+		
+		// headers: {
+		// 	'Content-Type': 'application/json',
+		// 	'X-CSRFToken': e.target.csrfmiddlewaretoken.value
+		// }
 	};
 
-	const basicField = (id, desc, type = "text") => (
+	const basicField = (id, desc, hook, type = "text") => (
 		<div className="form-group row">
 			<label htmlFor={id} className="col-sm-3 col-form-label">
 				{desc}
@@ -16,16 +46,19 @@ function PurchasePaymentForm(props) {
 					className="form-control"
 					id={id}
 					aria-describedby={desc}
+					onChange={e => hook(e.target.value)}
 				/>
 			</div>
 		</div>
 	);
 
+
 	return (
 		<div className="container">
 			<form onSubmit={onSubmit}>
-				{basicField("name", "Name")}
-				{basicField("email", "Email", "email")}
+				<CSRFToken/>
+				{basicField("name", "Name", setName)}
+				{basicField("email", "Email", setEmail, "email", )}
 				<div className="form-group row">
 					<label htmlFor="name" className="col-sm-3 col-form-label">
 						Tip amount

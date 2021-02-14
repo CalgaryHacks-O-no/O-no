@@ -17,7 +17,6 @@ from Ono.secret import DatabaseHost, DatabaseSchema, DatabaseUsername, DatabaseP
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -29,7 +28,7 @@ DEBUG = False
 if Environment == 'development':
     DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', ServerIP]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', ServerIP, 'first2fresh.tech', 'localhost8000.tech']
 
 # Application definition
 
@@ -118,6 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'backend.Customer'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
