@@ -5,7 +5,7 @@ import Leaderboards from "./Leaderboards";
 function MapLeaderboardScreen(props) {
 	return (
 		<div
-			// id="home"
+			id="home"
 			className="container-fluid pl-0"
 			style={{ height: "94.5vh" }}
 		>
