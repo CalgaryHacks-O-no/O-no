@@ -1,9 +1,11 @@
+import os
 import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import validate_image_file_extension
 
 # Create your models here.
+from Ono.settings import BASE_DIR
 
 
 class Customer (AbstractUser):
@@ -51,7 +53,9 @@ class Restaurant (models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.TextField(blank=False)
     address = models.TextField(blank=False)
-    image = models.ImageField(upload_to='restaurants/', validators=[validate_image_file_extension], blank=True)
+    image = models.ImageField(
+        upload_to='restaurants/',
+        validators=[validate_image_file_extension], blank=True)
     community = models.ForeignKey(Community, on_delete=models.CASCADE, null=False)
     longitude = models.FloatField()
     latitude = models.FloatField()
