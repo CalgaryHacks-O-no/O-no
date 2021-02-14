@@ -2,50 +2,66 @@ import React, { useEffect } from "react";
 import * as d3 from "d3";
 
 function PointsBreakdown(props) {
-	const priceBeforeTax = Math.ceil(55.0);
-	const tip = Math.ceil(priceBeforeTax * 0.15);
-	const tipMultiplied = tip * 2;
-	const visitMultiplier = 3;
-	const curbside = 15;
+	const { price, tip, curbsidePickup } = props;
 
 	useEffect(() => {
+		const priceBeforeTax = Math.ceil(price);
+		const tipMultiplied = parseFloat(Math.ceil(tip)) * 2;
+		const visitMultiplier = 3;
+		const curbsideBonus = curbsidePickup ? 15 : 0;
+
 		const totalPoints =
-			(priceBeforeTax + tipMultiplied + curbside) * visitMultiplier;
+			(priceBeforeTax + tipMultiplied + curbsideBonus) * visitMultiplier;
 		const priceProp = (priceBeforeTax / totalPoints) * 0.9;
 		const tipProp = tipMultiplied / totalPoints;
-		const curbsideProp = curbside / totalPoints;
+		const curbsideProp = curbsideBonus / totalPoints;
 		const visitProp = (priceProp + tipProp) * (visitMultiplier - 0.9);
 
-		const pieData = [
-			{
+		let pieContents = {
+			price: {
 				key: "price",
 				text: priceBeforeTax,
 				label: "Price",
 				value: priceProp,
 				fill: "#feb347",
 			},
-			{
-				key: "tip",
-				text: tipMultiplied,
-				label: "Tip",
-				value: tipProp,
-				fill: "rgb(15, 232, 142)",
-			},
-			{
-				key: "curbside",
-				text: curbside,
-				label: "Curbside Pickup",
-				value: curbsideProp,
-				fill: "rgb(180, 52, 235)",
-			},
-			{
-				key: "visits",
+			tip:
+				tip > 0
+					? {
+							key: "tip",
+							text: tipMultiplied,
+							label: "Tip",
+							value: tipProp,
+							fill: "rgb(15, 232, 142)",
+					  }
+					: null,
+			visits: {
 				text: `${visitMultiplier}x`,
 				label: "New Visit",
 				value: visitProp,
 				fill: "rgb(15, 137, 252)",
 			},
-		];
+			curbsidePickup: curbsidePickup
+				? {
+						text: curbsideBonus,
+						label: "Curbside Pickup",
+						value: curbsideProp,
+						fill: "rgb(180, 52, 235)",
+				  }
+				: null,
+		};
+
+		let pieData = [];
+		Object.entries(pieContents).forEach(([k, v]) => {
+			if (!v) {
+				return;
+			}
+
+			pieData.push({
+				key: k.toString(),
+				...v,
+			});
+		});
 
 		const pie = d3.pie().value((d) => d.value);
 		const pieArcData = pie(pieData);
@@ -68,19 +84,20 @@ function PointsBreakdown(props) {
 			.innerRadius(midRadius)
 			.outerRadius(outerRadius);
 
-		const svgCanvas = d3.selectAll(".pointsBreakdown");
+		const svgCanvas = d3.select(".pointsBreakdown");
+		svgCanvas.selectAll("*").remove();
 
 		svgCanvas
-			.selectAll("whatever")
-			.data(pieArcData)
+			.selectAll(".arcs")
+			.data(pieArcData, (d) => d.key)
 			.enter()
 			.append("path")
 			.attr("fill", (d) => d.data.fill)
 			.attr("d", arcPie);
 
 		svgCanvas
-			.selectAll("whatever")
-			.data(pieArcData)
+			.selectAll(".innerText")
+			.data(pieArcData, (d) => d.key)
 			.enter()
 			.append("text")
 			.text((d) => d.data.text)
@@ -93,8 +110,8 @@ function PointsBreakdown(props) {
 			.attr("transform", (d) => `translate(${arcPie.centroid(d)})`);
 
 		svgCanvas
-			.selectAll("whatever")
-			.data(pieArcData)
+			.selectAll(".outerText")
+			.data(pieArcData, (d) => d.key)
 			.enter()
 			.append("text")
 			.text((d) => d.data.label)
@@ -113,11 +130,12 @@ function PointsBreakdown(props) {
 			})
 			.attr("transform", (d) => `translate(${bigArcPie.centroid(d)})`);
 
-		svgCanvas
-			.selectAll(".totalPoints")
+		let totalPointsList = svgCanvas.selectAll(".totalPoints");
+		totalPointsList
 			.data([totalPoints])
 			.enter()
 			.append("text")
+			.attr("className", "totalPoints")
 			.text((d) => d)
 			.attr("text-anchor", "middle")
 			.attr("x", 0)
@@ -126,7 +144,7 @@ function PointsBreakdown(props) {
 			.attr("font-family", "Comfortaa, cursive")
 			.attr("font-size", 100)
 			.attr("fill", "rgb(8, 201, 40)");
-	}, []);
+	}, [price, tip, curbsidePickup]);
 
 	const canvasSize = 640;
 
@@ -140,7 +158,7 @@ function PointsBreakdown(props) {
 					canvasSize,
 					canvasSize,
 				].join(" ")}
-				width={800}
+				width={1000}
 				height={640}
 				fontFamily="sans-serif"
 			/>
