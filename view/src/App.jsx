@@ -8,7 +8,10 @@ import RestaurantBrowse from "./RestaurantBrowse";
 
 function App(props) {
 	const [communities, setCommunities] = useState([]);
+	const [commRestaurants, setCommRestaurants] = useState([]);
 	const [people, setPeople] = useState([]);
+	const [currentCommunity, setCurrentCommunity] = useState({});
+	const [orderRestaurant, setOrderRestaurant] = useState();
 
 	let host;
 	if (
@@ -48,9 +51,21 @@ function App(props) {
 	return (
 		<>
 			<Navbar />
-			<MapLeaderboardScreen communities={communities} people={people} />
-			<RestaurantBrowse />
-			<PurchaseScreen url={host} />
+			<MapLeaderboardScreen communities={communities}
+								  people={people}
+								  setCurrentCommunity={setCurrentCommunity}
+								  commRestaurants={commRestaurants}/>
+			<RestaurantBrowse url={host}
+							  communities={communities}
+							  currentCommunity={currentCommunity}
+							  setCurrentCommunity={setCurrentCommunity}
+							  setCommRestaurants={setCommRestaurants}
+							  setOrderRestaurant={setOrderRestaurant}
+			/>
+			<PurchaseScreen url={host}
+							currentCommunity={currentCommunity}
+							orderRestaurant={orderRestaurant}
+			/>
 			<Cards />
 			<Footer />
 		</>
