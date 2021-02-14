@@ -5,10 +5,8 @@ import {apiKey} from "./secret";
 function MapContainer(props) {
 
     const mapStyles = {
-        width: '50%',
-        height: '50%',
-        left: '25%',
-        top: '5%',
+        width: '100%',
+        height: '100%',
         
       };
 
@@ -44,15 +42,17 @@ function MapContainer(props) {
 
 
 	return (
-           <Map 
-             google={props.google}
-              zoom={12}
-             style={mapStyles}
-             initialCenter={{ lat: 51.0447, lng: -114.0719}}
-            > 
-            {renderLocations(restaurantLocationsData)}
-            
-            </Map>
+        <div className="container">
+                <Map 
+                    google={props.google}
+                    zoom={12}
+                    style={mapStyles}
+                    initialCenter={{ lat: 51.0447, lng: -114.0719}}
+                    > 
+                    {renderLocations(restaurantLocationsData)}
+                    
+                </Map>
+        </div>
 	);
 }
 
