@@ -78,11 +78,12 @@ def update_restaurants(request):
 
 
 def get_restaurants_in_community(request, community_name):
-    page = 1
+    pagination = False
+
     if request.GET.get('page'):
         page = int(request.GET['page'])
-
-    per_page = 16
+        pagination = True
+        per_page = 16
 
     something = {
         "restaurants": []
@@ -91,12 +92,15 @@ def get_restaurants_in_community(request, community_name):
     try:
         instances = Restaurant.objects.filter(community__name=community_name).order_by('name')
         length = instances.count()
-        if length > 0:
+        if length > 0 and pagination:
             pages = int(math.ceil(length/per_page))
             start = (page-1)*per_page
             end = (page*per_page) - 1
             something["pages"] = pages
             for restaurant in instances[start:end]:
+                something["restaurants"].append(restaurant.json_data())
+        else:
+            for restaurant in instances:
                 something["restaurants"].append(restaurant.json_data())
 
     except ObjectDoesNotExist:

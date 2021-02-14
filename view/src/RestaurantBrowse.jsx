@@ -3,8 +3,9 @@ import { toTitleCase } from "./utils";
 import Select from 'react-select'
 
 function RestaurantBrowse(props) {
-	const { communities, currentCommunity } = props;
+	const { communities, currentCommunity, url, setCommRestaurants } = props;
 	const [search, setSearch] = useState([]);
+	const [restaurants, setRestaurants] = useState([]);
 	const [searchDefault, setSearchDefault] = useState(0)
 
 	useEffect(()=>{
@@ -15,7 +16,8 @@ function RestaurantBrowse(props) {
 			return container;
 		});
 		setSearch(formatted);
-		setSearchDefault(formatted.find(item => item.value.id===currentCommunity));
+		setSearchDefault(formatted.find(item => item.value.id===currentCommunity.id));
+		getRestaurants(currentCommunity.name);
 	},[props.communities, props.currentCommunity]);
 
 	const rewardsData = [
@@ -29,9 +31,34 @@ function RestaurantBrowse(props) {
 		},
 	];
 
-	const performSearch = (value) => {
-		console.log(value);
+	const getRestaurants = (community) => {
+		if (!community) {
+			return;
+		}
+
+		fetch(`${url}/api/view/restaurant/${community}`, {
+			method: "GET",
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				setRestaurants(data.restaurants);
+				setCommRestaurants(data.restaurants);
+			});
 	}
+
+	const performSearch = (value) => {
+		getRestaurants(value.value.name);
+		setSearchDefault(search.find(item => item.value.id===value.id));
+	};
+
+	const renderRestaurantTable = () => {
+		return restaurants.map((restaurant) => (
+			<tr key={restaurant.id}>
+				<td>{toTitleCase(restaurant.name)}</td>
+				<td>{toTitleCase(restaurant.address)}</td>
+				<td><button className="btn btn-primary">Order</button></td>
+			</tr>));
+	};
 
 	const renderCards = (cardData) => {
 		return cardData.map((card, index) => (
@@ -78,28 +105,11 @@ function RestaurantBrowse(props) {
 						<tr>
 							<th scope="col">Name</th>
 							<th scope="col">Address</th>
-							<th scope="col">Image</th>
+							<th scope="col">Order</th>
 						</tr>
 						</thead>
 						<tbody>
-						<tr>
-							<th scope="row">1</th>
-							<td>Mark</td>
-							<td>Otto</td>
-							<td>@mdo</td>
-						</tr>
-						<tr>
-							<th scope="row">2</th>
-							<td>Jacob</td>
-							<td>Thornton</td>
-							<td>@fat</td>
-						</tr>
-						<tr>
-							<th scope="row">3</th>
-							<td>Larry</td>
-							<td>the Bird</td>
-							<td>@twitter</td>
-						</tr>
+						{renderRestaurantTable()}
 						</tbody>
 					</table>
 

@@ -11,7 +11,7 @@ import Spinner from "./Spinner";
 import containsLocation from "./containsLocation";
 
 function MapContainer(props) {
-	const { communities, setCurrentCommunity } = props;
+	const { communities, setCurrentCommunity, commRestaurants } = props;
 
 	const [geolocationLoaded, setGeolocationLoaded] = useState(false);
 	const [userLongitude, setUserLongitude] = useState(null); // Default should be: -114.071
@@ -30,7 +30,8 @@ function MapContainer(props) {
 			setGeolocationLoaded(true);
 		}
 		findCurrentCommunity();
-	}, [props.communities]);
+		createLocationData();
+	}, [props.communities], [props.commRestaurants]);
 
 	const mapStyles = {
 		width: "100%",
@@ -59,6 +60,18 @@ function MapContainer(props) {
 			type: "restaurant",
 		},
 	];
+
+	const createLocationData = () => {
+		restaurantLocationsData = commRestaurants.map(item => {{
+			const container = {};
+			container['latitude'] = item.latitude;
+			container['longitude'] = item.longitude;
+			container['name'] = item.name;
+			container['type'] = 'restaurant';
+			return container;
+		}});
+
+	};
 	// Debug: Show the community the user is in
 	// if (geolocationLoaded) {
 	// 	restaurantLocationsData.push({
@@ -92,8 +105,7 @@ function MapContainer(props) {
 				break;
 			}
 		}
-		console.log(currCommunity);
-		setCurrentCommunity(currCommunity.id);
+		setCurrentCommunity({'id':currCommunity.id,'name':currCommunity.name});
 	};
 
 	const renderPolygons = () => {
