@@ -1,8 +1,25 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
 import { apiKey } from "./secret";
 
 function MapContainer(props) {
+	const [userLongitude, setUserLongitude] = useState(51.05011);
+	const [userLatitude, setUserLatitude] = useState(-114.08529);
+
+	useEffect(() => {
+		if ("geolocation" in navigator) {
+      		console.log("Available");
+      		navigator.geolocation.getCurrentPosition(function(position) {
+      		console.log("Latitude is :", position.coords.latitude);
+      		console.log("Longitude is :", position.coords.longitude);
+      		setUserLatitude(position.coords.latitude);
+      		setUserLongitude(position.coords.longitude);
+    	});
+		} else {
+      		console.log("Not Available");
+		}
+	},[]);
+
 	const mapStyles = {
 		width: "100%",
 		height: "100%",
@@ -28,6 +45,12 @@ function MapContainer(props) {
 			longitude: "-114.1",
 			name: "Ham Burgers",
 			type: "restaurant",
+		},
+		{
+			latitude: userLatitude.toString(),
+			longitude: userLongitude.toString(),
+			name: "User Location",
+			type: "user",
 		},
 	];
 
