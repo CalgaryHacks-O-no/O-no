@@ -6,11 +6,13 @@ import "regenerator-runtime/runtime.js"; // Global import for async/await keywor
 import Footer from "./Footer";
 import MapLeaderboardScreen from "./MapLeaderboardScreen";
 import Navbar from "./Navbar";
+import RestaurantBrowse from "./RestaurantBrowse";
 
 ReactDOM.render(
 	<React.StrictMode>
 		<Navbar />
 		<MapLeaderboardScreen />
+		<RestaurantBrowse />
 		<PurchaseScreen />
 		<Cards />
 		<Footer />

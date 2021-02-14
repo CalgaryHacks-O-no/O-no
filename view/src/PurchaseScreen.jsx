@@ -6,7 +6,7 @@ import PointsBreakdown from "./PointsBreakdown";
 
 function PurchaseScreen(props) {
 	return (
-		<div className="container mb-5">
+		<div id="order" className="container mb-5">
 			<PointsBreakdown />
 			<div className="row">
 				<div className="col-lg-6">
