@@ -81,7 +81,7 @@ class Restaurant(models.Model):
             'name': self.name,
             'address': self.address,
             'image': self.check_file(),
-            'community': self.community.json_data(),
+            'community_id': self.community.id,
             'longitude': self.longitude,
             'latitude': self.latitude
         }
