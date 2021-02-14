@@ -8,7 +8,7 @@ from django.core.validators import validate_image_file_extension
 from Ono.settings import BASE_DIR
 
 
-class Customer (AbstractUser):
+class Customer(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def json_data(self):
@@ -26,7 +26,7 @@ class Customer (AbstractUser):
         return total
 
 
-class Community (models.Model):
+class Community(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.TextField(blank=False)
     location = models.TextField(blank=False)
@@ -36,13 +36,23 @@ class Community (models.Model):
         verbose_name = "Community"
         verbose_name_plural = "Communities"
 
+    def parse_raw_polygon_data(self):
+        coords = []
+        polygon = self.location
+        polygon = polygon.split('POLYGON ((')[1].split('))')[0]
+        lngs_lats = polygon.split(', ')
+        for lng_lat in lngs_lats:
+            lng, lat = lng_lat.split()
+            coords.append({'lat': lat, 'lng': lng})
+        return coords
+
     def json_data(self):
         json_data = {
             'id': self.id.__str__(),
             'name': self.name,
             'points': self.calc_points(),
-            'location': self.location,
-            'sector': self.sector
+            'location': self.parse_raw_polygon_data(),
+            'sector': self.sector,
         }
         return json_data
 
@@ -53,7 +63,7 @@ class Community (models.Model):
         return total
 
 
-class Restaurant (models.Model):
+class Restaurant(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.TextField(blank=False)
     address = models.TextField(blank=False)
@@ -84,7 +94,7 @@ class Restaurant (models.Model):
             return ''
 
 
-class Purchase (models.Model):
+class Purchase(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     person = models.ForeignKey(Customer, on_delete=models.PROTECT)
     community = models.ForeignKey(Community, on_delete=models.PROTECT)
@@ -102,7 +112,7 @@ class Purchase (models.Model):
         return json_data
 
 
-class Voucher (models.Model):
+class Voucher(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.TextField(blank=False)
     description = models.TextField(blank=False)
@@ -125,3 +135,7 @@ class Voucher (models.Model):
             return self.image.url
         except ValueError:
             return ''
+
+# class Scoreboard(models.Model):
+#     s_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+#     community = models.ForeignKey(Community, on_delete=models.PROTECT)
