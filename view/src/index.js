@@ -5,7 +5,6 @@ import Cards from "./Cards";
 import "regenerator-runtime/runtime.js"; // Global import for async/await keywords
 import Footer from "./Footer";
 import MapLeaderboardScreen from "./MapLeaderboardScreen";
-
 import Navbar from "./Navbar";
 
 ReactDOM.render(
