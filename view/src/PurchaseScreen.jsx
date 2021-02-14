@@ -81,7 +81,10 @@ function PurchaseScreen(props) {
 	};
 
 	return (
-		<div id="order" className="container mb-5">
+		<div id="order" className="container mb-5 pt-5">
+			<h1 style={{ fontFamily: "Comfortaa, cursive" }}>
+				Order &amp; win points!
+			</h1>
 			<PointsBreakdown
 				price={price}
 				tip={tip}

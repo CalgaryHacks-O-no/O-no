@@ -7,7 +7,11 @@ function Navbar(props) {
 			className="navbar navbar-expand-lg navbar-dark sticky-top"
 			style={{ backgroundColor: "rgb(8, 133, 41)" }}
 		>
-			<a className="navbar-brand" href="#">
+			<a
+				className="navbar-brand"
+				href="#"
+				style={{ fontFamily: "Comfortaa, cursive" }}
+			>
 				<img
 					src={fresh}
 					width="30"
