@@ -15,7 +15,7 @@ class Customer(AbstractUser):
         json_data = {
             'id': self.id.__str__(),
             'username': self.username,
-            'points': self.calc_points
+            'points': self.calc_points()
         }
         return json_data
 
