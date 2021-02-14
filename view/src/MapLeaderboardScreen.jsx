@@ -15,7 +15,7 @@ function MapLeaderboardScreen(props) {
 				</div>
 				<div className="col-lg-3">
 					<div className="pl-4 mt-3">
-						<Leaderboards />
+						<Leaderboards url={props.url}/>
 					</div>
 				</div>
 			</div>

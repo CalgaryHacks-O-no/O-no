@@ -76,7 +76,7 @@ function Leaderboards(props) {
     const sortedUserData = userPointData.sort((a,b) => b.points-a.points);
 
     const getCommunities = () => {
-		fetch('http://127.0.0.1:8000/api/view/community', {
+		fetch(props.url+'/api/view/community', {
             method: 'GET'
         }).then(res => res.json())
             .then(data => {
@@ -85,7 +85,7 @@ function Leaderboards(props) {
 	}
 
 	const getPeople = () => {
-		fetch('http://127.0.0.1:8000/api/view/customer', {
+		fetch(props.url+'/api/view/customer', {
             method: 'GET'
         }).then(res => res.json())
             .then(data => {
