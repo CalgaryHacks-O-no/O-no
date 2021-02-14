@@ -9,10 +9,8 @@ function PurchaseScreen(props) {
 	// const []
 
 	const onSubmit = (event) => {
-		const csrfToken = CSRFToken;
 		event.preventDefault();
-		console.log(`${name}`);
-
+	
 		fetch(url + "/api/create/purchase", {
 			method: "POST",
 			headers: {
@@ -27,7 +25,7 @@ function PurchaseScreen(props) {
 				},
 			}),
 		}).then((value) => console.log(value.json()));
-
+	
 		// headers: {
 		// 	'Content-Type': 'application/json',
 		// 	'X-CSRFToken': e.target.csrfmiddlewaretoken.value

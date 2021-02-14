@@ -32,11 +32,8 @@ def create_model(request, model_name):
     content = json.loads(request.body)['content']
     print(content)
 
-    if(model_name == "purchase"):
+    if model_name == "purchase":
         content["person_id"] = request.user.id
-
-
-
 
     instance = apps.get_model('backend', model_name).objects.create(**content)
 
