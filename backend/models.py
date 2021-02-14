@@ -1,9 +1,27 @@
 import uuid
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import validate_image_file_extension
 
 # Create your models here.
+
+
+class Customer (AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    def json_data(self):
+        json_data = {
+            'id': self.id.__str__(),
+            'username': self.username,
+            'points': self.calc_points
+        }
+        return json_data
+
+    def calc_points(self):
+        total = 0
+        for purchase in Purchase.objects.filter(person_id=self.id):
+            total += purchase.point_amount
+        return total
 
 
 class Community (models.Model):
@@ -59,7 +77,7 @@ class Restaurant (models.Model):
 
 class Purchase (models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    person = models.ForeignKey(User, on_delete=models.PROTECT)
+    person = models.ForeignKey(Customer, on_delete=models.PROTECT)
     community = models.ForeignKey(Community, on_delete=models.PROTECT)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.PROTECT)
     point_amount = models.PositiveIntegerField()
@@ -67,7 +85,7 @@ class Purchase (models.Model):
     def json_data(self):
         json_data = {
             'id': self.id.__str__(),
-            'name': self.person.username,
+            'name': self.person.json_data(),
             'community': self.community.json_data(),
             'restaurant': self.restaurant.json_data(),
             'point_amount': self.point_amount

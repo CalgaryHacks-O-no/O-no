@@ -253,6 +253,8 @@ fabric.properties
 # https://plugins.jetbrains.com/plugin/12206-codestream
 .idea/codestream.xml
 
+.idea/*
+
 ### react ###
 .DS_*
 logs
@@ -273,3 +275,5 @@ sketch
 view/static/main.js
 Ono/secret.py
 webhooks/hooks.json
+
+view/src/secret.js
