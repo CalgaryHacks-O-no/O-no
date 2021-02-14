@@ -28,7 +28,7 @@ DEBUG = False
 if Environment == 'development':
     DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', ServerIP]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', ServerIP, 'first2fresh.tech', 'localhost8000.tech']
 
 # Application definition
 
