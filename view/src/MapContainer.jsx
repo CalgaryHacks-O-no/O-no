@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Map, GoogleApiWrapper, InfoWindow, Marker } from "google-maps-react";
+import {
+	Map,
+	GoogleApiWrapper,
+	InfoWindow,
+	Marker,
+	Polygon,
+} from "google-maps-react";
 import { apiKey } from "./secret";
 
 function MapContainer(props) {
+	const { communities } = props;
+
 	const [userLongitude, setUserLongitude] = useState(51.05011);
 	const [userLatitude, setUserLatitude] = useState(-114.08529);
 
@@ -64,6 +72,34 @@ function MapContainer(props) {
 		));
 	};
 
+	const renderPolygons = () => {
+		if (!communities || !communities.length) {
+			return;
+		}
+
+		const sortedCommunities = communities.sort(
+			(a, b) => b.points - a.points
+		);
+		const topCommunities = sortedCommunities;
+		const maxPoints = topCommunities[0].points;
+		const minPoints = topCommunities[topCommunities.length - 1].points;
+		const pointRange = maxPoints - minPoints;
+
+		return topCommunities.map((community) => (
+			<Polygon
+				key={community.id}
+				paths={community.location}
+				strokeColor="#00FF00"
+				strokeOpacity={0.8}
+				strokeWeight={2}
+				fillColor="#00FF00"
+				fillOpacity={
+					((community.points - minPoints) / pointRange) * 0.4
+				}
+			/>
+		));
+	};
+
 	return (
 		<div className="container h-100">
 			<Map
@@ -73,6 +109,7 @@ function MapContainer(props) {
 				initialCenter={{ lat: 51.0447, lng: -114.0719 }}
 			>
 				{renderLocations(restaurantLocationsData)}
+				{renderPolygons()}
 			</Map>
 		</div>
 	);

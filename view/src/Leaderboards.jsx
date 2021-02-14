@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { toTitleCase } from "./utils";
 
 function Leaderboards(props) {
-	const [communities, setCommunities] = useState([]);
-	const [people, setPeople] = useState([]);
+	const { communities, people } = props;
+
+	// const [communities, setCommunities] = useState([]);
+	// const [people, setPeople] = useState([]);
 
 	const userPointData = [
 		{
@@ -68,40 +70,7 @@ function Leaderboards(props) {
 		},
 	];
 
-	useEffect(() => {
-		getCommunities();
-		getPeople();
-	}, []);
-
 	const sortedUserData = userPointData.sort((a, b) => b.points - a.points);
-
-	const getCommunities = () => {
-		fetch(props.url + "/api/view/community", {
-			method: "GET",
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				setCommunities(data.community);
-			})
-			.then((res) => res.json())
-			.then((data) => {
-				setCommunities(data.community);
-			});
-	};
-
-	const getPeople = () => {
-		fetch(props.url + "/api/view/customer", {
-			method: "GET",
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				setPeople(data.customer);
-			})
-			.then((res) => res.json())
-			.then((data) => {
-				setPeople(data.customer);
-			});
-	};
 
 	const addRows = (boiz) => {
 		return boiz.slice(0, 5).map((person, i) => (
@@ -126,7 +95,7 @@ function Leaderboards(props) {
 		<div className="container">
 			<h3 className="text-center">Leaderboards</h3>
 			<table className="table">
-				<thead>
+				<thead className="thead-light">
 					<tr>
 						<th scope="col">Community</th>
 						<th scope="col">Sector</th>
@@ -141,7 +110,7 @@ function Leaderboards(props) {
 			</table>
 
 			<table className="table">
-				<thead>
+				<thead className="thead-light">
 					<tr>
 						<th scope="col">Name</th>
 						<th scope="col">Points</th>

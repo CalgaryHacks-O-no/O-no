@@ -68,8 +68,6 @@ function PointsBreakdown(props) {
 			.innerRadius(midRadius)
 			.outerRadius(outerRadius);
 
-		console.log("pieArcData", pieArcData);
-
 		const svgCanvas = d3.selectAll(".pointsBreakdown");
 
 		svgCanvas

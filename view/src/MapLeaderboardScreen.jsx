@@ -3,6 +3,8 @@ import MapContainer from "./MapContainer";
 import Leaderboards from "./Leaderboards";
 
 function MapLeaderboardScreen(props) {
+	const { communities, people, url } = props;
+
 	return (
 		<div
 			id="home"
@@ -11,11 +13,15 @@ function MapLeaderboardScreen(props) {
 		>
 			<div className="row h-100">
 				<div className="col-lg-7 pl-0">
-					<MapContainer />
+					<MapContainer communities={communities} />
 				</div>
 				<div className="col-lg-3">
 					<div className="pl-4 mt-3">
-						<Leaderboards url={props.url}/>
+						<Leaderboards
+							communities={communities}
+							people={people}
+							url={url}
+						/>
 					</div>
 				</div>
 			</div>
