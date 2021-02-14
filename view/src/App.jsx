@@ -19,7 +19,7 @@ function App(props) {
 	) {
 		host = "http://" + window.location.hostname + ":8000";
 	} else {
-		host = "http://" + window.location.hostname;
+		host = "https://" + window.location.hostname;
 	}
 
 	useEffect(() => {
