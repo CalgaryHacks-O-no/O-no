@@ -3,7 +3,7 @@ import { toTitleCase } from "./utils";
 import Select from 'react-select'
 
 function RestaurantBrowse(props) {
-	const { communities, currentCommunity, url, setCommRestaurants, setOrderRestaurant } = props;
+	const { communities, currentCommunity, url, setCommRestaurants, setOrderRestaurant, setCurrentCommunity } = props;
 	const [search, setSearch] = useState([]);
 	const [restaurants, setRestaurants] = useState([]);
 	const [searchDefault, setSearchDefault] = useState(0)
@@ -48,7 +48,10 @@ function RestaurantBrowse(props) {
 
 	const performSearch = (value) => {
 		getRestaurants(value.value.name);
-		setSearchDefault(search.find(item => item.value.id===value.id));
+		setSearchDefault(search.find(item => item.value.id===value.value.id));
+		console.log(value.value.id);
+		console.log({'id':value.value.id,'name':value.value.name})
+		setCurrentCommunity({'id':value.value.id,'name':value.value.name})
 	};
 
 	const setOrderDetails = (e, value) => {
@@ -57,7 +60,7 @@ function RestaurantBrowse(props) {
 	};
 
 	const renderRestaurantTable = () => {
-		return restaurants.map((restaurant) => (
+		return restaurants.slice(0,15).map((restaurant) => (
 			<tr key={restaurant.id}>
 				<td>{toTitleCase(restaurant.name)}</td>
 				<td>{toTitleCase(restaurant.address)}</td>

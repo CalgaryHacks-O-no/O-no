@@ -67,7 +67,7 @@ class Community(models.Model):
         total = 0
         for purchase in Purchase.objects.filter(community_id=self.id):
             total += purchase.point_amount
-        total = random.randint(10,50000)
+        # total = random.randint(10,50000)
         return total
 
 

@@ -58,6 +58,7 @@ function App(props) {
 			<RestaurantBrowse url={host}
 							  communities={communities}
 							  currentCommunity={currentCommunity}
+							  setCurrentCommunity={setCurrentCommunity}
 							  setCommRestaurants={setCommRestaurants}
 							  setOrderRestaurant={setOrderRestaurant}
 			/>
