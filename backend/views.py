@@ -30,6 +30,13 @@ def get_all_data(request, model_name):
 @csrf_exempt
 def create_model(request, model_name):
     content = json.loads(request.body)['content']
+    print(content)
+
+    if(model_name == "purchase"):
+        content["person_id"] = request.user.id
+
+
+
 
     instance = apps.get_model('backend', model_name).objects.create(**content)
 

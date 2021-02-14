@@ -14,7 +14,7 @@ function PurchaseScreen(props) {
 				</div>
 				<div className="col-lg-6">
 					<div className="pl-4">
-						<PurchasePaymentForm />
+						<PurchasePaymentForm url = {props.url}/>
 					</div>
 				</div>
 			</div>
