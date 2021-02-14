@@ -3,6 +3,7 @@ from django.urls import path, re_path, include
 from . import views
 
 urlpatterns = [
+    path('view/restaurant/<str:community_name>', views.get_restaurants_in_community),
     path('view/<str:model_name>', views.get_all_data),
     path('view/<str:model_name>/<uuid:model_id>', views.get_data),
     path('create/<str:model_name>', views.create_model),
