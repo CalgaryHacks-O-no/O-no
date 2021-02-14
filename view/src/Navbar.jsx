@@ -7,7 +7,7 @@ function Navbar(props) {
 			style={{ backgroundColor: "rgb(8, 133, 41)" }}
 		>
 			<a className="navbar-brand" href="#">
-				Local Eats
+				First2Fresh
 			</a>
 			<button
 				className="navbar-toggler"

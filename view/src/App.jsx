@@ -45,6 +45,16 @@ function App(props) {
 			});
 	};
 
+	let host;
+	if (
+		window.location.hostname === "127.0.0.1" ||
+		window.location.hostname === "localhost"
+	) {
+		host = "http://" + window.location.hostname + ":8000";
+	} else {
+		host = "http://" + window.location.hostname;
+	}
+
 	return (
 		<>
 			<Navbar />
