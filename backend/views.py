@@ -14,6 +14,9 @@ def get_restaurant(request, restaurant_id):
 
 def update_communities(request):
     business_licenses.add_communities_to_database()
+    return HttpResponse('Updated communities')
 
 
-
+def update_restaurants(request):
+    business_licenses.add_restaurants_to_database()
+    return HttpResponse('Updated restaurants')

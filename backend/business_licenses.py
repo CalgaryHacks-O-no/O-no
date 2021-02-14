@@ -21,6 +21,10 @@ def get_restaurant_indexes(df: pandas.DataFrame) -> set:
     return restaurant_idxs
 
 
+def clean_community_name(s: str) -> str:
+    return s.split(',')[0].strip()
+
+
 def get_restaurant_communities(df: pandas.DataFrame, restaurant_idxs: set) -> set:
     # separate by community
     community_names = {'default'}
@@ -29,7 +33,6 @@ def get_restaurant_communities(df: pandas.DataFrame, restaurant_idxs: set) -> se
         community = communities[idx]
         if not isinstance(community, str):
             continue
-        community = community.split(',')[0].strip()
         community_names.add(community)
     return community_names
 
@@ -49,32 +52,26 @@ def add_communities_to_database() -> None:
                 for dup in same_names:
                     dup.delete()
             # do nothing there are no other attributes to alter
-        break
+    return None
 
 
+def get_community_obj_from_name(name:str)->internal_models.Community:
+    community = internal_models.Community.objects.get(name=name)
+    return community
 
 
-
-
-
-# separate by community
-# community_restaurant = {}
-# communities = df['COMDISTNM']
-# names = df['TRADENAME']
-#
-# for idx in restaurant_idxs:
-#     name = names[idx].strip()
-#     print(name)
-#
-# community = communities[idx]
-# if not isinstance(community, str):
-#     continue
-# community = community.split(',')[0].strip()
-# print(community, type(community))
-
-# if community not in community_restaurant:
-#     community_restaurant[community] = []
-# community_restaurant[community].append(name)
-#
-#
-# print(len(community_restaurant))
+def add_restaurants_to_database() -> None:
+    df = read_business_licenses()
+    idxs = get_restaurant_indexes(df)
+    communities = df['COMDISTNM']
+    addresses = df['ADDRESS']
+    restaurant_names = df['TRADENAME']
+    longitudes = df['longitude']
+    latitudes = df['latitude']
+    for idx in idxs:
+        community = get_community_obj_from_name(clean_community_name(communities[idx]))
+        new_restaurant = internal_models.Restaurant(
+            name=restaurant_names[idx], address=addresses[idx], community=community, longitude=longitudes[idx],
+            latitude=latitudes[idx])
+        new_restaurant.save()
+    return None
