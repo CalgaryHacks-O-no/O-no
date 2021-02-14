@@ -67,9 +67,9 @@ class Purchase (models.Model):
     def json_data(self):
         json_data = {
             'id': self.id.__str__(),
-            'name': self.person,
-            'community': self.community,
-            'restaurant': self.restaurant,
+            'name': self.person.username,
+            'community': self.community.json_data(),
+            'restaurant': self.restaurant.json_data(),
             'point_amount': self.point_amount
         }
         return json_data
