@@ -10,22 +10,24 @@ function PurchasePaymentForm(props) {
 
 
 	const onSubmit = (event) => {
-		const data = {
-			"points" : 69
-		}
+
 		const csrfToken = CSRFToken;
 		event.preventDefault();
 		console.log(`${name}`);
-		console.log(fetch('http://127.0.0.1:8000/api/view/Customer'));
 
-		//,{
-		// 	method: 'POST',	
-		// 	headers: {
-		// 		'Content-Type':	'application/json',
-		// 		'X-CSRFToken':	csrfToken
-		// 	},
-		// 	body: JSON.stringify(data)
-		// }
+		fetch(props.url + '/api/create/purchase',{
+			method: 'POST',
+			headers: {
+				'Content-Type':	'application/json',
+				'X-CSRFToken':	event.target.csrfmiddlewaretoken.value
+			},
+			body: JSON.stringify({"content" : {
+					"restaurant_id": "006fda11bedf4b2abb8f9f3d885dc850",
+					"community_id": "c7c20fd26de34f02ba9e16b58a64af8f",
+					"point_amount": 42069}})
+		}).then(value => console.log(value.json()))
+
+
 		
 		// headers: {
 		// 	'Content-Type': 'application/json',
